@@ -26,7 +26,8 @@ import InputControl from './components/InputControl';
 const App: React.FC = () => {
   const [error, setError] = useState<string>()
   const [calculatedBMI, setCalculatedBMI] = useState<number>()
-  const [statusBMI, setStatusBMI] = useState<String>("")  
+  const [statusBMI, setStatusBMI] = useState<String>("")
+  const [calcUnits, setCalcUnits] = useState<'cmkg'|'ftlbs'>('cmkg')  
 
   const heightInputRef = useRef<HTMLIonInputElement>(null)
   const weightInputRef = useRef<HTMLIonInputElement>(null)
@@ -65,6 +66,11 @@ const App: React.FC = () => {
     setCalculatedBMI(0)
   }
 
+  const selectCalcUnitHandler = (selectedValue: 'cmkg'| 'ftlbs') => {
+    console.log("changed", selectedValue)
+    setCalcUnits(selectedValue)
+  }
+
   return (
     <>
       <IonAlert
@@ -83,14 +89,14 @@ const App: React.FC = () => {
           <IonGrid className='ion-text-center'>
             <IonRow>
               <IonCol>
-                <InputControl selectedValue='ftlbs'/>
+                <InputControl selectedValue={calcUnits} onSelectedValue={selectCalcUnitHandler}/>
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol>
                 <IonItem>
                   <IonLabel position="floating">
-                    Tinggi Badan (cm)
+                    Tinggi Badan ({calcUnits === 'cmkg' ? 'cm' : 'feet'})
                   </IonLabel>
                   <IonInput ref={heightInputRef}></IonInput>
                 </IonItem>
@@ -100,7 +106,7 @@ const App: React.FC = () => {
               <IonCol>
                 <IonItem>
                   <IonLabel position="floating">
-                    Berat Badan (kg)
+                    Berat Badan ({calcUnits === 'cmkg' ? 'kg' : 'lbs'})
                   </IonLabel>
                   <IonInput ref={weightInputRef}></IonInput>
                 </IonItem>
