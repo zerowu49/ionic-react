@@ -1,7 +1,7 @@
 import { IonApp, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import {useRef, useState} from 'react'
 import { calculatorOutline, refreshOutline,   } from 'ionicons/icons';
-
+import BmiControls from './components/BmiControls'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -85,20 +85,7 @@ const App: React.FC = () => {
               </IonItem>
             </IonCol>
           </IonRow>
-          <IonRow>
-            <IonCol size="6">
-              <IonButton onClick={calculateBMI}>
-                <IonIcon slot="start" icon={calculatorOutline}></IonIcon>
-                Calculate
-              </IonButton>
-            </IonCol>
-            <IonCol size="6">
-              <IonButton onClick={resetInputs}>
-                <IonIcon slot="start" name={refreshOutline}></IonIcon>
-                Reset
-              </IonButton>
-            </IonCol>
-          </IonRow>
+          <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
             {calculatedBMI && statusBMI && (
               <IonRow>
                 <IonCol>
