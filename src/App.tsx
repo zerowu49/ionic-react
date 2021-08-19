@@ -21,6 +21,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import InputControl from './components/InputControl';
 
 const App: React.FC = () => {
   const [error, setError] = useState<string>()
@@ -80,6 +81,11 @@ const App: React.FC = () => {
         </IonHeader>
         <IonContent className='ion-padding'>
           <IonGrid className='ion-text-center'>
+            <IonRow>
+              <IonCol>
+                <InputControl selectedValue='ftlbs'/>
+              </IonCol>
+            </IonRow>
             <IonRow>
               <IonCol>
                 <IonItem>
