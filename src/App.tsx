@@ -1,4 +1,4 @@
-import { IonApp, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonApp, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import {useRef, useState} from 'react'
 import { calculatorOutline, refreshOutline,   } from 'ionicons/icons';
 import BmiControls from './components/BmiControls'
@@ -23,17 +23,25 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 const App: React.FC = () => {
+  const [error, setError] = useState<string>()
   const [calculatedBMI, setCalculatedBMI] = useState<number>()
   const [statusBMI, setStatusBMI] = useState<String>("")  
 
   const heightInputRef = useRef<HTMLIonInputElement>(null)
   const weightInputRef = useRef<HTMLIonInputElement>(null)
 
+  const clearError = () => {
+    setError("")
+  }
+
   const calculateBMI = () => {
     const enteredWeight = weightInputRef.current!.value
     const enteredHeight = heightInputRef.current!.value
 
-    if(!enteredWeight || !enteredHeight) return
+    if(!enteredWeight || !enteredHeight || +enteredHeight<= 0 || +enteredWeight <= 0 ) {
+      setError('Please enter a valid (non-negative) input number')
+      return 
+    }
 
     const bmi = +enteredWeight / ((+enteredHeight/100)*(+enteredHeight/100) )
     // console.log(bmi)
@@ -57,50 +65,58 @@ const App: React.FC = () => {
   }
 
   return (
-    <IonApp>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>BMI Calculator</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className='ion-padding'>
-        <IonGrid className='ion-text-center'>
-          <IonRow>
-            <IonCol>
-              <IonItem>
-                <IonLabel position="floating">
-                  Tinggi Badan (cm)
-                </IonLabel>
-                <IonInput ref={heightInputRef}></IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonItem>
-                <IonLabel position="floating">
-                  Berat Badan (kg)
-                </IonLabel>
-                <IonInput ref={weightInputRef}></IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
-            {calculatedBMI && statusBMI && (
-              <IonRow>
-                <IonCol>
-                  <IonCard>
-                    <IonCardContent className='ion-text-center'>
-                      <h3>{calculatedBMI}</h3>
-                      <h1>{statusBMI}</h1>
-                    </IonCardContent>
-                  </IonCard>
-                </IonCol>
-              </IonRow>
-            )}
-        </IonGrid>
-      </IonContent>
-    </IonApp>
+    <>
+      <IonAlert
+        isOpen={!!error}
+        message={error}
+        buttons={[
+          {text: 'Okay', handler: clearError}
+        ]}/>
+      <IonApp>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>BMI Calculator</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className='ion-padding'>
+          <IonGrid className='ion-text-center'>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="floating">
+                    Tinggi Badan (cm)
+                  </IonLabel>
+                  <IonInput ref={heightInputRef}></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="floating">
+                    Berat Badan (kg)
+                  </IonLabel>
+                  <IonInput ref={weightInputRef}></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
+              {calculatedBMI && statusBMI && (
+                <IonRow>
+                  <IonCol>
+                    <IonCard>
+                      <IonCardContent className='ion-text-center'>
+                        <h3>{calculatedBMI}</h3>
+                        <h1>{statusBMI}</h1>
+                      </IonCardContent>
+                    </IonCard>
+                  </IonCol>
+                </IonRow>
+              )}
+          </IonGrid>
+        </IonContent>
+      </IonApp>
+    </>
   )};
 
 export default App;
