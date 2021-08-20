@@ -38,16 +38,24 @@ const App: React.FC = () => {
   }
 
   const calculateBMI = () => {
-    const enteredWeight = weightInputRef.current!.value
-    const enteredHeight = heightInputRef.current!.value
+    let enteredWeight = weightInputRef.current!.value as number
+    let enteredHeight = heightInputRef.current!.value as number
 
     if(!enteredWeight || !enteredHeight || +enteredHeight<= 0 || +enteredWeight <= 0 ) {
       setError('Please enter a valid (non-negative) input number')
       return 
     }
 
+    /// BMI Calculation
+    if(calcUnits == 'ftlbs'){
+      enteredWeight = enteredWeight * 2.2
+      enteredHeight = enteredHeight / 0.0328
+    }
+
+    console.log(enteredWeight)
+    console.log(enteredHeight)
+
     const bmi = +enteredWeight / ((+enteredHeight/100)*(+enteredHeight/100) )
-    // console.log(bmi)
     setCalculatedBMI(bmi)
 
     if (bmi <= 8.5) {
