@@ -1,7 +1,5 @@
-import { IonAlert, IonApp, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonApp, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import {useRef, useState} from 'react'
-import { calculatorOutline, refreshOutline,   } from 'ionicons/icons';
-import BmiControls from './components/BmiControls'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -22,48 +20,17 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import InputControl from './components/InputControl';
+import BmiResult from './components/BmiResult';
 
 const App: React.FC = () => {
   const [error, setError] = useState<string>()
-  const [calculatedBMI, setCalculatedBMI] = useState<number>()
-  const [statusBMI, setStatusBMI] = useState<String>("")
   const [calcUnits, setCalcUnits] = useState<'cmkg'|'ftlbs'>('cmkg')  
 
   const heightInputRef = useRef<HTMLIonInputElement>(null)
   const weightInputRef = useRef<HTMLIonInputElement>(null)
 
-  const clearError = () => {
-    setError("")
-  }
-
-  const calculateBMI = () => {
-    const enteredWeight = weightInputRef.current!.value
-    const enteredHeight = heightInputRef.current!.value
-
-    if(!enteredWeight || !enteredHeight || +enteredHeight<= 0 || +enteredWeight <= 0 ) {
-      setError('Please enter a valid (non-negative) input number')
-      return 
-    }
-
-    const bmi = +enteredWeight / ((+enteredHeight/100)*(+enteredHeight/100) )
-    // console.log(bmi)
-    setCalculatedBMI(bmi)
-
-    if (bmi <= 8.5) {
-      setStatusBMI("Kurus")
-    } else if (bmi > 8.5 && bmi <= 24.9) {
-      setStatusBMI("Normal");
-    } else if (bmi > 24.9 && bmi <= 29.9) {
-      setStatusBMI("Gemuk");
-    } else {
-      setStatusBMI("Obesitas");
-    }
-  }
-
-  const resetInputs = () => {
-    weightInputRef.current!.value = ''
-    heightInputRef.current!.value = ''
-    setCalculatedBMI(0)
+  const changeErrorHandler = (message: string) => {
+    setError(message)
   }
 
   const selectCalcUnitHandler = (selectedValue: 'cmkg'| 'ftlbs') => {
@@ -77,7 +44,7 @@ const App: React.FC = () => {
         isOpen={!!error}
         message={error}
         buttons={[
-          {text: 'Okay', handler: clearError}
+          {text: 'Okay', handler: () => changeErrorHandler("")}
         ]}/>
       <IonApp>
         <IonHeader>
@@ -112,7 +79,7 @@ const App: React.FC = () => {
                 </IonItem>
               </IonCol>
             </IonRow>
-            <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
+            {/* <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
               {calculatedBMI && statusBMI && (
                 <IonRow>
                   <IonCol>
@@ -124,7 +91,13 @@ const App: React.FC = () => {
                     </IonCard>
                   </IonCol>
                 </IonRow>
-              )}
+              )} */}
+              <BmiResult 
+                selectedValue={calcUnits} 
+                weightInputRef={weightInputRef}
+                heightInputRef={heightInputRef}
+                onError={changeErrorHandler}
+                />
           </IonGrid>
         </IonContent>
       </IonApp>

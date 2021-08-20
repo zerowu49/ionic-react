@@ -3,7 +3,7 @@ import { calculatorOutline, refreshOutline } from 'ionicons/icons';
 import React from 'react'
 
 
-const ExploreContainer: React.FC<{onCalculate: () => void; onReset: ()=> void}> = props => {
+const BmiControls: React.FC<{onCalculate: () => void; onReset: ()=> void}> = props => {
   return (
     <IonRow>
       <IonCol className="ion-text-left">
@@ -22,4 +22,4 @@ const ExploreContainer: React.FC<{onCalculate: () => void; onReset: ()=> void}> 
   );
 };
 
-export default ExploreContainer;
+export default BmiControls;
