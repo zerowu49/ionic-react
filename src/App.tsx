@@ -1,5 +1,5 @@
 import { IonAlert, IonApp, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BmiControls from './components/BmiControls'
 
 /* Core CSS required for Ionic components to work properly */
@@ -32,6 +32,17 @@ const App: React.FC = () => {
   const heightInputRef = useRef<HTMLIonInputElement>(null)
   const weightInputRef = useRef<HTMLIonInputElement>(null)
 
+  useEffect(() => {
+    let enteredWeight = weightInputRef.current!.value as number
+    let enteredHeight = heightInputRef.current!.value as number
+
+    // If data available then do calculation
+    if (enteredWeight && enteredHeight && +enteredHeight >= 0 && +enteredWeight >= 0) {
+      console.log("useffect")
+      calculateBMI()
+    }
+  }, [calcUnits])
+
   const clearError = () => {
     setError("")
   }
@@ -54,7 +65,9 @@ const App: React.FC = () => {
     console.log(enteredWeight)
     console.log(enteredHeight)
 
-    const bmi = +enteredWeight / ((+enteredHeight / 100) * (+enteredHeight / 100))
+    let bmi = +enteredWeight / ((+enteredHeight / 100) * (+enteredHeight / 100))
+    bmi = bmi.toFixed(2) as unknown as number
+
     setCalculatedBMI(bmi)
 
     if (bmi <= 8.5) {
