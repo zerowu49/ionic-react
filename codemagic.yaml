@@ -9,9 +9,6 @@ workflows:
       - name: Install npm dependencies for Ionic Capacitor project
         script: |
                     npm install
-      - name: Set Android SDK location
-        script: |
-                    echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
       - name: Update dependencies and copy web assets to native project
         script: |
           # npx cap copy # <- use this is you don't need to update native dependencies
