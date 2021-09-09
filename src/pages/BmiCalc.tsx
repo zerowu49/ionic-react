@@ -1,4 +1,4 @@
-import { IonAlert, IonApp, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonApp, IonBackButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useState, useRef, useEffect } from 'react';
 import BmiControls from '../components/BmiControls';
 import BmiResult from '../components/BmiResult';
@@ -75,7 +75,7 @@ const BmiCalc: React.FC = () => {
   }
 
   return (
-    <>
+    <IonPage>
       <IonAlert
         isOpen={!!error}
         message={error}
@@ -86,6 +86,9 @@ const BmiCalc: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonTitle>BMI Calculator</IonTitle>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref='/home'/>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className='ion-padding'>
@@ -120,7 +123,7 @@ const BmiCalc: React.FC = () => {
           </IonGrid>
         </IonContent>
       </IonApp>
-    </>
+    </IonPage>
   )
 };
 

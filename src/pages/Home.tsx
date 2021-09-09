@@ -1,5 +1,4 @@
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -11,7 +10,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen class='ion-padding'>
-        <h2>This works!</h2>        
+        <h2>00000030182 - Jonathan</h2>        
         <IonButton expand='block' routerLink="/bmi">BMI Calculator</IonButton>
         <IonButton expand='block' routerLink="/bmr">BMR Calculator</IonButton>
       </IonContent>

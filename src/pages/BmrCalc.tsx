@@ -1,18 +1,20 @@
-import { IonAlert, IonApp, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonApp, IonBackButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonListHeader, IonPage, IonRadio, IonRadioGroup, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useState, useRef, useEffect } from 'react';
 import BmiControls from '../components/BmiControls';
-import BmiResult from '../components/BmiResult';
+import BmrResult from '../components/BmrResult';
 import InputControl from '../components/InputControl';
 import './Home.css';
 
 const BmrCalc: React.FC = () => {
   const [error, setError] = useState<string>()
-  const [calculatedBMI, setCalculatedBMI] = useState<number>()
-  const [statusBMI, setStatusBMI] = useState<string>("")
+  const [calculatedBMR, setCalculatedBMR] = useState<number>()
   const [calcUnits, setCalcUnits] = useState<'cmkg' | 'ftlbs'>('cmkg')
+  const [gender, setGender] = useState<'male' | 'female'>()
+  const [calory, setCalory] = useState<string>()
 
   const heightInputRef = useRef<HTMLIonInputElement>(null)
   const weightInputRef = useRef<HTMLIonInputElement>(null)
+  const ageInputRef = useRef<HTMLIonInputElement>(null)
 
   useEffect(() => {
     let enteredWeight = weightInputRef.current!.value as number
@@ -21,7 +23,7 @@ const BmrCalc: React.FC = () => {
     // If data available then do calculation
     if (enteredWeight && enteredHeight && +enteredHeight >= 0 && +enteredWeight >= 0) {
       console.log("useffect")
-      calculateBMI()
+      calculateBMR()
     }
   }, [calcUnits])
 
@@ -29,9 +31,10 @@ const BmrCalc: React.FC = () => {
     setError("")
   }
 
-  const calculateBMI = () => {
+  const calculateBMR = () => {
     let enteredWeight = weightInputRef.current!.value as number
     let enteredHeight = heightInputRef.current!.value as number
+    let enteredAge = ageInputRef.current!.value as number
 
     if (!enteredWeight || !enteredHeight || +enteredHeight <= 0 || +enteredWeight <= 0) {
       setError('Please enter a valid (non-negative) input number')
@@ -47,26 +50,23 @@ const BmrCalc: React.FC = () => {
     console.log(enteredWeight)
     console.log(enteredHeight)
 
-    let bmi = +enteredWeight / ((+enteredHeight / 100) * (+enteredHeight / 100))
-    bmi = bmi.toFixed(2) as unknown as number
-
-    setCalculatedBMI(bmi)
-
-    if (bmi <= 8.5) {
-      setStatusBMI("Kurus")
-    } else if (bmi > 8.5 && bmi <= 24.9) {
-      setStatusBMI("Normal");
-    } else if (bmi > 24.9 && bmi <= 29.9) {
-      setStatusBMI("Gemuk");
-    } else {
-      setStatusBMI("Obesitas");
+    // let bmr = +enteredWeight / ((+enteredHeight / 100) * (+enteredHeight / 100))
+    let bmr
+    console.log(enteredAge)
+    if(gender == 'male'){
+      bmr = 66 + (13.7 * +enteredWeight) + (5 * +enteredHeight) - (6.8 * enteredAge)
+    }else{
+      bmr = 65 + (9.6 * +enteredWeight) + (1.8 * +enteredHeight) - (4.7 * enteredAge)
     }
+    bmr = bmr.toFixed(2) as unknown as number
+
+    setCalculatedBMR(bmr)
   }
 
   const resetInputs = () => {
     weightInputRef.current!.value = ''
     heightInputRef.current!.value = ''
-    setCalculatedBMI(0)
+    setCalculatedBMR(0)
   }
 
   const selectCalcUnitHandler = (selectedValue: 'cmkg' | 'ftlbs') => {
@@ -75,7 +75,7 @@ const BmrCalc: React.FC = () => {
   }
 
   return (
-    <>
+    <IonPage>
       <IonAlert
         isOpen={!!error}
         message={error}
@@ -86,6 +86,9 @@ const BmrCalc: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonTitle>BMR Calculator</IonTitle>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref='/home'/>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className='ion-padding'>
@@ -95,6 +98,35 @@ const BmrCalc: React.FC = () => {
                 <InputControl selectedValue={calcUnits} onSelectedValue={selectCalcUnitHandler} />
               </IonCol>
             </IonRow>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="floating">
+                    Age
+                  </IonLabel>
+                  <IonInput ref={ageInputRef}></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <IonRadioGroup value={gender} onIonChange={(e => setGender(e.detail.value))}>
+              <IonListHeader>
+                <IonLabel>Gender</IonLabel>
+              </IonListHeader>
+              <IonRow>
+                <IonCol>
+                  <IonItem>
+                    <IonLabel>Male</IonLabel>
+                    <IonRadio slot="start" value="male" />
+                  </IonItem>
+                </IonCol>
+                <IonCol>
+                  <IonItem>
+                    <IonLabel>Female</IonLabel>
+                    <IonRadio slot="start" value="female" />
+                  </IonItem>
+                </IonCol>
+              </IonRow>
+            </IonRadioGroup>
             <IonRow>
               <IonCol>
                 <IonItem>
@@ -115,12 +147,12 @@ const BmrCalc: React.FC = () => {
                 </IonItem>
               </IonCol>
             </IonRow>
-            <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
-            <BmiResult calculatedBMI={calculatedBMI} statusBMI={statusBMI} />
+            <BmiControls onCalculate={calculateBMR} onReset={resetInputs} />
+            <BmrResult calculatedBMR={calculatedBMR} />
           </IonGrid>
         </IonContent>
       </IonApp>
-    </>
+    </IonPage>
   )
 };
 
