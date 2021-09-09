@@ -1,0 +1,24 @@
+# Automatically generated on 2021-08-08 UTC from https://codemagic.io/app/610f3f89e328af5ee93976c7/settings
+# Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
+
+workflows:
+  android-workflow:
+    name: Android Workflow
+    max_build_duration: 60
+    scripts:
+      - name: Install npm dependencies for Ionic Capacitor project
+        script: |
+                    npm install
+      - name: Set Android SDK location
+        script: |
+                    echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
+      - name: Update dependencies and copy web assets to native project
+        script: |
+          # npx cap copy # <- use this is you don't need to update native dependencies
+          npx cap sync # <- update native dependencies and copy web assets to native project          
+      - name: Build Android release
+        script: |
+          cd android
+          ./gradlew assembleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.apk
