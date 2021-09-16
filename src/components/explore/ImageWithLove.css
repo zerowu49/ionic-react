@@ -1,0 +1,6 @@
+#love {
+  position: absolute;
+  right: 5vw;
+  top: 10vh;
+  transform: translateY(-50%);
+}

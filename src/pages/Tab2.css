@@ -1,0 +1,23 @@
+#searchbar{
+    position: absolute;
+    top: 20vh;
+    transform: translateY(-50%);
+}
+#content{
+    position: relative;
+    top: 25vh;
+}
+#cardColor{
+    --background: rgb(16, 209, 74);
+}
+
+#buttonColor{
+    --color: white;
+    --border-color: white;
+}
+
+#teks{
+    color: white;
+    font-weight: bold;
+    font-size: 3rem;
+}

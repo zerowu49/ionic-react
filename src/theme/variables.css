@@ -234,3 +234,12 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1e1e1e;
   }
 }
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJfecg.woff2");
+}
+
+:root {
+  --ion-font-family: 'Poppins';
+}

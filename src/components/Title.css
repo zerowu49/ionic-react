@@ -1,0 +1,11 @@
+.container {
+  text-align: left;
+  position: absolute;
+  left: 5vw;
+  top: 10vh;
+  transform: translateY(-50%);
+}
+
+strong {
+  font-size: 3rem;
+}
