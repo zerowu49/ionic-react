@@ -1,5 +1,6 @@
 import { IonCard, IonCardContent, IonCol, IonRow } from '@ionic/react';
 import React  from 'react'
+import './BmiResult.css'
 
 const BmiResult: React.FC<{
     calculatedBMI: number | undefined;
@@ -13,9 +14,9 @@ const BmiResult: React.FC<{
       {bmi && status && (
         <IonRow>
           <IonCol>
-            <IonCard>
+            <IonCard id="result">
               <IonCardContent className='ion-text-center'>
-                <h3>{bmi}</h3>
+                <h2>{bmi}</h2>
                 <h1>{status}</h1>
               </IonCardContent>
             </IonCard>

@@ -84,7 +84,7 @@ const BmrCalc: React.FC = () => {
         ]} />
       <IonApp>
         <IonHeader>
-          <IonToolbar>
+          <IonToolbar color='primary'>
             <IonTitle>BMR Calculator</IonTitle>
             <IonButtons slot="start">
               <IonBackButton defaultHref='/home'/>
