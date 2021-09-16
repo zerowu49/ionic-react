@@ -92,64 +92,70 @@ const BmrCalc: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className='ion-padding'>
-          <IonGrid className='ion-text-center'>
-            <IonRow>
-              <IonCol>
-                <InputControl selectedValue={calcUnits} onSelectedValue={selectCalcUnitHandler} />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">
-                    Age
-                  </IonLabel>
-                  <IonInput ref={ageInputRef}></IonInput>
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <IonRadioGroup value={gender} onIonChange={(e => setGender(e.detail.value))}>
-              <IonListHeader>
-                <IonLabel>Gender</IonLabel>
-              </IonListHeader>
-              <IonRow>
-                <IonCol>
-                  <IonItem>
-                    <IonLabel>Male</IonLabel>
-                    <IonRadio slot="start" value="male" />
-                  </IonItem>
-                </IonCol>
-                <IonCol>
-                  <IonItem>
-                    <IonLabel>Female</IonLabel>
-                    <IonRadio slot="start" value="female" />
-                  </IonItem>
-                </IonCol>
-              </IonRow>
-            </IonRadioGroup>
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">
-                    Tinggi Badan ({calcUnits === 'cmkg' ? 'cm' : 'feet'})
-                  </IonLabel>
-                  <IonInput ref={heightInputRef}></IonInput>
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">
-                    Berat Badan ({calcUnits === 'cmkg' ? 'kg' : 'lbs'})
-                  </IonLabel>
-                  <IonInput ref={weightInputRef}></IonInput>
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <BmiControls onCalculate={calculateBMR} onReset={resetInputs} />
-            <BmrResult calculatedBMR={calculatedBMR} />
-          </IonGrid>
+        <IonGrid>
+          <IonRow>
+            <IonCol sizeSm='8' offsetSm="2" sizeMd='6' offsetMd='3'>
+              <IonGrid className='ion-no-padding'>
+                <IonRow>
+                  <IonCol>
+                    <InputControl selectedValue={calcUnits} onSelectedValue={selectCalcUnitHandler} />
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>
+                    <IonItem>
+                      <IonLabel position="floating">
+                        Age
+                      </IonLabel>
+                      <IonInput ref={ageInputRef}></IonInput>
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
+                <IonRadioGroup value={gender} onIonChange={(e => setGender(e.detail.value))}>
+                  <IonListHeader>
+                    <IonLabel>Gender</IonLabel>
+                  </IonListHeader>
+                  <IonRow>
+                    <IonCol>
+                      <IonItem>
+                        <IonLabel>Male</IonLabel>
+                        <IonRadio slot="start" value="male" />
+                      </IonItem>
+                    </IonCol>
+                    <IonCol>
+                      <IonItem>
+                        <IonLabel>Female</IonLabel>
+                        <IonRadio slot="start" value="female" />
+                      </IonItem>
+                    </IonCol>
+                  </IonRow>
+                </IonRadioGroup>
+                <IonRow>
+                  <IonCol>
+                    <IonItem>
+                      <IonLabel position="floating">
+                        Tinggi Badan ({calcUnits === 'cmkg' ? 'cm' : 'feet'})
+                      </IonLabel>
+                      <IonInput ref={heightInputRef}></IonInput>
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>
+                    <IonItem>
+                      <IonLabel position="floating">
+                        Berat Badan ({calcUnits === 'cmkg' ? 'kg' : 'lbs'})
+                      </IonLabel>
+                      <IonInput ref={weightInputRef}></IonInput>
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
+                <BmiControls onCalculate={calculateBMR} onReset={resetInputs} />
+                <BmrResult calculatedBMR={calculatedBMR} />
+              </IonGrid>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
         </IonContent>
       </IonApp>
     </IonPage>

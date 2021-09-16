@@ -23,7 +23,7 @@ const BmrResult: React.FC<{
                     <IonCol>
                       <b>Activity Level</b>
                     </IonCol>
-                    <IonCol>
+                    <IonCol className='ion-text-right'>
                       <b>Calorie</b>
                     </IonCol>
                   </IonRow>
@@ -31,7 +31,7 @@ const BmrResult: React.FC<{
                     <IonCol>
                       Sedentary: little or no exercise:
                     </IonCol>
-                    <IonCol>
+                    <IonCol className='ion-text-right'>
                       {bmr*1.2}
                     </IonCol>
                   </IonRow>
@@ -39,7 +39,7 @@ const BmrResult: React.FC<{
                     <IonCol>
                       Exercise 1-3 times/week:
                     </IonCol>
-                    <IonCol>
+                    <IonCol className='ion-text-right'>
                       {bmr*1.375}
                     </IonCol>
                   </IonRow>
@@ -47,7 +47,7 @@ const BmrResult: React.FC<{
                     <IonCol>
                       Exercise 4-5 times/week:
                     </IonCol>
-                    <IonCol>
+                    <IonCol className='ion-text-right'>
                       {bmr*1.55}
                     </IonCol>
                   </IonRow>
@@ -55,16 +55,16 @@ const BmrResult: React.FC<{
                     <IonCol>
                       Intense exercise 6-7 times/week:
                     </IonCol>
-                    <IonCol>
-                      {bmr*1.9}
+                    <IonCol className='ion-text-right'>
+                      {bmr*1.725}
                     </IonCol>
                   </IonRow>
                   <IonRow>
                     <IonCol>
                       Daily exercise or intense exercise 3-4 times/week:
                     </IonCol>
-                    <IonCol>
-                      {bmr*1.725}
+                    <IonCol className='ion-text-right'>
+                      {bmr*1.9}
                     </IonCol>
                   </IonRow>
                 </IonGrid>
