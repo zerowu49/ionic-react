@@ -8,7 +8,7 @@ import './Home.css';
 const BmiCalc: React.FC = () => {
   const [error, setError] = useState<string>()
   const [calculatedBMI, setCalculatedBMI] = useState<number>()
-  const [statusBMI, setStatusBMI] = useState<string>("")
+  const [statusBMI, setStatusBMI] = useState<'Kurus' | 'Normal' | 'Gemuk' | 'Obesitas'>('Kurus')
   const [calcUnits, setCalcUnits] = useState<'cmkg' | 'ftlbs'>('cmkg')
 
   const heightInputRef = useRef<HTMLIonInputElement>(null)
