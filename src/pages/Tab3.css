@@ -1,0 +1,13 @@
+#listTrip{
+    margin: 3vh 5vh;
+}
+
+#tripName{
+    margin: 3vh 5vh;
+}
+
+#tripButton{
+    margin-top: 2vh;
+    --color: white;
+    --background: gray;
+}

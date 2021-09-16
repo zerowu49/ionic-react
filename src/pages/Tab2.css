@@ -5,7 +5,7 @@
 }
 #content{
     position: relative;
-    top: 30vh;
+    top: 10vh;
 }
 #cardColor{
     --background: rgb(16, 209, 74);

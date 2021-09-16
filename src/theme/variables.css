@@ -243,3 +243,11 @@ http://ionicframework.com/docs/theming/ */
 :root {
   --ion-font-family: 'Poppins';
 }
+
+#headerTitle{
+  height: 20%;
+}
+
+.underline {
+  text-decoration: underline;
+}

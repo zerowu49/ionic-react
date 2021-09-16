@@ -10,7 +10,7 @@ const Tab2: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen >
-        <div>
+        <div id="headerTitle">
           <Title name="Search"/>
         </div>
         <IonToolbar id="searchbar" className="ion-padding">
