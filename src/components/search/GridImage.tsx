@@ -1,15 +1,15 @@
-import { IonCard, IonCardTitle } from '@ionic/react';
-
+import { IonCardTitle } from '@ionic/react';
+import './GridImage.css';
 
 const GridImage: React.FC<{
   imgSrc: string,
   name: string,
 }> = props => {
   return (
-    <IonCard>
+    <>
       <img src={props.imgSrc} height="100%" />
-      <IonCardTitle>{props.name}</IonCardTitle>
-    </IonCard>
+      <IonCardTitle id="name">{props.name}</IonCardTitle>
+    </>
   );
 };
 

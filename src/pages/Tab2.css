@@ -1,11 +1,11 @@
 #searchbar{
     position: absolute;
-    top: 20vh;
+    top: 23vh;
     transform: translateY(-50%);
 }
 #content{
     position: relative;
-    top: 25vh;
+    top: 30vh;
 }
 #cardColor{
     --background: rgb(16, 209, 74);
@@ -20,4 +20,8 @@
     color: white;
     font-weight: bold;
     font-size: 3rem;
+}
+
+#grid{
+    padding-bottom: var(--ion-padding, 8vh);
 }

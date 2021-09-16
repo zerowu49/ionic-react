@@ -9,10 +9,10 @@ const Tab2: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <Title name="Search"/>
-      </IonHeader>
       <IonContent fullscreen >
+        <div>
+          <Title name="Search"/>
+        </div>
         <IonToolbar id="searchbar" className="ion-padding">
           <IonSearchbar placeholder="Where to?" value={searchText} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
         </IonToolbar>
@@ -28,7 +28,7 @@ const Tab2: React.FC = () => {
 
           <h2>Destinations travellers love</h2>
           
-          <IonGrid>
+          <IonGrid id="grid">
             <IonRow>
               <IonCol>
                 <GridImage 
@@ -50,7 +50,7 @@ const Tab2: React.FC = () => {
               <IonCol>
                 <GridImage 
                   imgSrc="https://asset.kompas.com/crops/NR6BozhUCCfAAvI5Incx0-avccQ=/0x0:1024x683/750x500/data/photo/2021/05/10/609942e9cb514.jpg"
-                  name="New York City"/>
+                  name="Malaysia"/>
               </IonCol>
             </IonRow>
           </IonGrid>
