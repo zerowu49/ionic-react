@@ -13,6 +13,7 @@ import { homeOutline, searchOutline, heartOutline, pencilOutline } from 'ionicon
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
+import Tab4 from './pages/Tab4';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,50 +33,56 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import Tab4 from './pages/Tab4';
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route path="/tab4">
-            <Tab4 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={homeOutline} />
-            <IonLabel>Explore</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={searchOutline} />
-            <IonLabel>Search</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={heartOutline} />
-            <IonLabel>Plan</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab4" href="/tab4">
-            <IonIcon icon={pencilOutline} />
-            <IonLabel>Review</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const explore = "explore"
+  const search = "search"
+  const plan = "plan"
+  const review = "review"
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path={explore}>
+              <Tab1 />
+            </Route>
+            <Route exact path={search}>
+              <Tab2 />
+            </Route>
+            <Route path={plan}>
+              <Tab3 />
+            </Route>
+            <Route path={review}>
+              <Tab4 />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/tab1" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="tab1" href={explore}>
+              <IonIcon icon={homeOutline} />
+              <IonLabel>Explore</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab2" href={explore}>
+              <IonIcon icon={searchOutline} />
+              <IonLabel>Search</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab3" href={plan}>
+              <IonIcon icon={heartOutline} />
+              <IonLabel>Plan</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab4" href={review}>
+              <IonIcon icon={pencilOutline} />
+              <IonLabel>Review</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  )
+};
 
 export default App;
