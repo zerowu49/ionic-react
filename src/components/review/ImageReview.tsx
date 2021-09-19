@@ -1,4 +1,4 @@
-import { IonCard, IonButton, IonImg } from '@ionic/react';
+import { IonCard, IonButton, IonImg, IonGrid, IonRow, IonCol } from '@ionic/react';
 import './ImageReview.css'
 
 interface ImageProps {
@@ -8,14 +8,18 @@ interface ImageProps {
 
 const ImageReview: React.FC<ImageProps> = ({ imgSrc, text }) => {
   return (
-    <div id="imageContainer">
-      <IonCard>
-        <IonImg src={imgSrc} />
-        <IonButton id="buttonCenter" fill="outline" shape="round">
-          {text}
-        </IonButton>
-      </IonCard>
-    </div>
+    <IonGrid>
+      <IonRow>
+        <IonCol id="imageContainer" sizeMd="8" offsetMd="2">
+          <IonCard>
+            <IonImg src={imgSrc} />
+            <IonButton id="buttonCenter" fill="outline" shape="round">
+              {text}
+            </IonButton>
+          </IonCard>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
   );
 };
 

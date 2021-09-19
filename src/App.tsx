@@ -35,10 +35,10 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 const App: React.FC = () => {
-  const explore = "explore"
-  const search = "search"
-  const plan = "plan"
-  const review = "review"
+  const explore = "/explore"
+  const search = "/search"
+  const plan = "/plan"
+  const review = "/review"
 
   return (
     <IonApp>
@@ -58,7 +58,7 @@ const App: React.FC = () => {
               <Tab4 />
             </Route>
             <Route exact path="/">
-              <Redirect to="/tab1" />
+              <Redirect to={explore} />
             </Route>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
@@ -66,7 +66,7 @@ const App: React.FC = () => {
               <IonIcon icon={homeOutline} />
               <IonLabel>Explore</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="tab2" href={explore}>
+            <IonTabButton tab="tab2" href={search}>
               <IonIcon icon={searchOutline} />
               <IonLabel>Search</IonLabel>
             </IonTabButton>
