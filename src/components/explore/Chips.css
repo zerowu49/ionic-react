@@ -1,3 +1,7 @@
-ion-chip{
-  --background: white;
+ion-chip {
+  --background: var(--ion-color-primary);
+}
+
+ion-label {
+  --color: var(--ion-color-primary-contrast);
 }
