@@ -76,6 +76,10 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #f5f6f9;
 }
 
+/* @media (prefers-color-scheme: dark) { */
+/*
+   * Dark Colors
+   * -----------
 /*
    * Dark Colors
    * -------------------------------------------
@@ -231,6 +235,7 @@ body {
 
   --ion-card-background: #1e1e1e;
 }
+/* } */
 
 @font-face {
   font-family: "Poppins";
