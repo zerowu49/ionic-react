@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonApp, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonMenuToggle, IonRouterOutlet, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 
@@ -25,13 +25,34 @@ import MailDetail from './pages/MailDetail';
 import MailTabs from './pages/MailTabs';
 import Mail from './pages/Mail';
 import Meet from './pages/Meet';
+import { list } from 'ionicons/icons';
 
 const App: React.FC = () => {
   console.info("masuk app")
   return (
     <IonApp>
       <IonReactRouter>
-          <IonRouterOutlet>
+          <IonMenu contentId="main">
+            <IonHeader>
+              <IonToolbar>
+                <IonButtons slot="start">
+                  <IonMenuButton/>
+                </IonButtons>
+                <IonTitle>Ion Mail</IonTitle>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent>
+              <IonList>
+                <IonMenuToggle>
+                  <IonItem button routerLink="/tabs/mail">
+                    <IonIcon slot="start" icon={list}/>
+                    <IonLabel>All Mail</IonLabel>
+                  </IonItem>
+                </IonMenuToggle>
+              </IonList>
+            </IonContent>
+          </IonMenu>
+          <IonRouterOutlet id="main">
             <Route path='/tabs' component={MailTabs}/>
             <Route path='/mail/:mailId' component={MailDetail}/>
             <Redirect exact from='/' to='/tabs'/>

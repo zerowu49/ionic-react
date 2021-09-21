@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCardContent, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCard, IonCardContent, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 export const MAIL_DATA = [
   {id: 'm1', subject: 'Magang MBKM dimulai'},
@@ -11,7 +11,10 @@ const Mail: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Mail</IonTitle>
+          <IonButtons slot="start">
+            <IonMenuButton/>
+          </IonButtons>
+          <IonTitle>All Mail</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen class='ion-padding'>
