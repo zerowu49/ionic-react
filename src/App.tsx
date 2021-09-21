@@ -1,5 +1,6 @@
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { mailOutline, videocamOutline } from 'ionicons/icons'
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -21,20 +22,32 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { Redirect, Route } from 'react-router';
-import Home from './pages/Home';
-import BmiCalc from './pages/BmiCalc';
-import BmrCalc from './pages/BmrCalc';
+import Mail from './pages/Mail';
+import MailDetail from './pages/MailDetail';
+import Meet from './pages/Meet';
 
 const App: React.FC = () => {
   return (
       <IonApp>
         <IonReactRouter>
-          <IonRouterOutlet>
-            <Route exact path='/home' component={Home}/>
-            <Redirect exact from='/' to='/home'/>
-            <Route exact path='/bmi' component={BmiCalc}/>
-            <Route exact path='/bmr' component={BmrCalc}/>
-          </IonRouterOutlet>
+          <IonTabs>  
+            <IonRouterOutlet>
+              <Route exact path='/mail' component={Mail}/>
+              <Route exact path='/meet' component={Meet}/>
+              <Route path='/mail/:mailId' component={MailDetail}/>
+              <Redirect exact from='/' to='/mail'/>
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="mail" href="/mail">
+                <IonIcon icon={mailOutline}/>
+                <IonLabel>Mail</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="meet" href="/meet">
+                <IonIcon icon={videocamOutline}/>
+                <IonLabel>Meet</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
         </IonReactRouter>
       </IonApp>
   )
