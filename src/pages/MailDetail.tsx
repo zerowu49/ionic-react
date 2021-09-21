@@ -5,13 +5,12 @@ import { MAIL_DATA } from './Mail';
 const MailDetail: React.FC = () => {
   const mId = useParams<{mailId: string}>().mailId
   const selectedMail = MAIL_DATA.find(m => m.id === mId)
-
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton></IonBackButton>
+            <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
           <IonTitle>
             {selectedMail ? selectedMail?.subject : 'No mail found'}

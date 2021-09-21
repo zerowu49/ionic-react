@@ -1,6 +1,5 @@
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { mailOutline, videocamOutline } from 'ionicons/icons'
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -22,34 +21,23 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { Redirect, Route } from 'react-router';
-import Mail from './pages/Mail';
 import MailDetail from './pages/MailDetail';
+import MailTabs from './pages/MailTabs';
+import Mail from './pages/Mail';
 import Meet from './pages/Meet';
 
 const App: React.FC = () => {
+  console.info("masuk app")
   return (
-      <IonApp>
-        <IonReactRouter>
-          <IonTabs>  
-            <IonRouterOutlet>
-              <Route exact path='/mail' component={Mail}/>
-              <Route exact path='/meet' component={Meet}/>
-              <Route path='/mail/:mailId' component={MailDetail}/>
-              <Redirect exact from='/' to='/mail'/>
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="mail" href="/mail">
-                <IonIcon icon={mailOutline}/>
-                <IonLabel>Mail</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="meet" href="/meet">
-                <IonIcon icon={videocamOutline}/>
-                <IonLabel>Meet</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
-      </IonApp>
+    <IonApp>
+      <IonReactRouter>
+          <IonRouterOutlet>
+            <Route path='/tabs' component={MailTabs}/>
+            <Route path='/mail/:mailId' component={MailDetail}/>
+            <Redirect exact from='/' to='/tabs'/>
+          </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
   )
 };
 

@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCardContent, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 export const MAIL_DATA = [
   {id: 'm1', subject: 'Magang MBKM dimulai'},
