@@ -25,7 +25,8 @@ import MailDetail from './pages/MailDetail';
 import MailTabs from './pages/MailTabs';
 import Mail from './pages/Mail';
 import Meet from './pages/Meet';
-import { list } from 'ionicons/icons';
+import { list, settings, warning } from 'ionicons/icons';
+import Settings from './pages/Settings';
 
 const App: React.FC = () => {
   console.info("masuk app")
@@ -49,10 +50,23 @@ const App: React.FC = () => {
                     <IonLabel>All Mail</IonLabel>
                   </IonItem>
                 </IonMenuToggle>
+                <IonMenuToggle>
+                  <IonItem button routerLink="/tabs/spam">
+                    <IonIcon slot="start" icon={warning}/>
+                    <IonLabel>Spam</IonLabel>
+                  </IonItem>
+                </IonMenuToggle>
+                <IonMenuToggle>
+                  <IonItem button routerLink="/settings">
+                    <IonIcon slot="start" icon={settings}/>
+                    <IonLabel>Settings</IonLabel>
+                  </IonItem>
+                </IonMenuToggle>
               </IonList>
             </IonContent>
           </IonMenu>
           <IonRouterOutlet id="main">
+            <Route exact path='/settings' component={Settings}/>
             <Route path='/tabs' component={MailTabs}/>
             <Route path='/mail/:mailId' component={MailDetail}/>
             <Redirect exact from='/' to='/tabs'/>

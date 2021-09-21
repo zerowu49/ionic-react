@@ -3,6 +3,7 @@ import { mailOutline, videocamOutline } from 'ionicons/icons';
 import { Route, Redirect } from 'react-router';
 import Mail from './Mail';
 import Meet from './Meet';
+import Spam from './Spam';
 
 const MailTabs: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const MailTabs: React.FC = () => {
         <Redirect exact path='/tabs' to="/tabs/mail"/>
         <Route exact path='/tabs/mail' component={Mail}/>
         <Route exact path='/tabs/meet' component={Meet}/>
+        <Route exact path='/tabs/spam' component={Spam}/>
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="mail" href="/tabs/mail">
