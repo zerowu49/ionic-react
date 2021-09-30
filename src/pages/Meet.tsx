@@ -1,6 +1,7 @@
-import { IonAvatar, IonContent, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { ban, create, trashBin, trashOutline } from 'ionicons/icons';
-import { useRef } from 'react';
+import { isPlatform } from '@ionic/core';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { addOutline, ban, create, trashBin, trashOutline } from 'ionicons/icons';
+import { useRef, useState } from 'react';
 
 export const FRIENDS_DATA = [
   {id: 'f1', name: 'Adi', img: "https://pict-b.sindonews.net/dyn/620/pena/news/2021/08/23/185/519138/ini-penyebab-lord-adi-gagal-melaju-ke-grand-final-masterchef-indonesia-iuo.jpg"},
@@ -9,7 +10,12 @@ export const FRIENDS_DATA = [
 ]
 
 const Meet: React.FC = () => {
+  const [startDeleting, setStartDeleting] = useState(false)
   const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null)
+
+  const startAddFriendHandler = () => {
+    console.log("adding handler...")
+  }
 
   const callFriendHandler = () => {
     console.log("Calling...")
@@ -20,8 +26,13 @@ const Meet: React.FC = () => {
     console.log("Blocking...")
   }
 
-  const deleteFriendHandler = (event: React.MouseEvent) => {
+  const startDeleteHandler = () => {
+    setStartDeleting(true)
     slidingOptionsRef.current?.closeOpened()
+  }
+
+  const deleteFriendHandler = () => {
+    setStartDeleting(false)
     console.log("Deleting...")
   }
 
@@ -31,40 +42,65 @@ const Meet: React.FC = () => {
   }
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Meet</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen class='ion-padding'>
-        <IonList>
-        {FRIENDS_DATA.map(friend => (
-          <IonItemSliding key={friend.id} ref={slidingOptionsRef}>
-            <IonItemOptions side="start">
-              <IonItemOption color="danger" onClick={blockFriendHandler}>
-                <IonIcon slot="icon-only" icon={ban}/>
-              </IonItemOption>
-              <IonItemOption color="warning" onClick={deleteFriendHandler}>
-                <IonIcon slot="icon-only" icon={trashOutline}/>
-              </IonItemOption>
-            </IonItemOptions>
-            <IonItemOptions side="end">
-              <IonItemOption color="warning" onClick={editFriendHandler}>
-                <IonIcon slot="icon-only" icon={create}/>
-              </IonItemOption>
-            </IonItemOptions>
-            <IonItem lines="full" button onClick={callFriendHandler}>
-              <IonAvatar slot="start">
-                <img src={friend.img}/>
-              </IonAvatar>
-              <IonLabel>{friend.name}</IonLabel>
-            </IonItem>
-          </IonItemSliding>
-        ))}
-        </IonList>
-      </IonContent>
-    </IonPage>
+    <>
+      <IonAlert isOpen={startDeleting}
+        header="Are you sure?"
+        message="Do you want to delete your friend? This cannot be undone."
+        buttons={[
+          {text: "No", role: 'Cancel', handler: () => {setStartDeleting(false)}},
+          {text: "Yes", handler: deleteFriendHandler},
+        ]}
+      />
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>Meet</IonTitle>
+            {!isPlatform("android") && (
+              <IonButtons slot="end">
+                <IonButton onClick={startAddFriendHandler}>
+                  <IonIcon icon={addOutline}/>
+                </IonButton>
+              </IonButtons>
+            )}
+            
+          </IonToolbar>
+        </IonHeader>
+        <IonContent fullscreen class='ion-padding'>
+          <IonList>
+          {FRIENDS_DATA.map(friend => (
+            <IonItemSliding key={friend.id} ref={slidingOptionsRef}>
+              <IonItemOptions side="start">
+                <IonItemOption color="danger" onClick={blockFriendHandler}>
+                  <IonIcon slot="icon-only" icon={ban}/>
+                </IonItemOption>
+                <IonItemOption color="warning" onClick={startDeleteHandler}>
+                  <IonIcon slot="icon-only" icon={trashOutline}/>
+                </IonItemOption>
+              </IonItemOptions>
+              <IonItemOptions side="end">
+                <IonItemOption color="warning" onClick={editFriendHandler}>
+                  <IonIcon slot="icon-only" icon={create}/>
+                </IonItemOption>
+              </IonItemOptions>
+              <IonItem lines="full" button onClick={callFriendHandler}>
+                <IonAvatar slot="start">
+                  <img src={friend.img}/>
+                </IonAvatar>
+                <IonLabel>{friend.name}</IonLabel>
+              </IonItem>
+            </IonItemSliding>
+          ))}
+          </IonList>
+          {isPlatform("android") && (
+            <IonFab horizontal="end" vertical="bottom" slot='fixed'>
+              <IonFabButton color='secondary' onClick={startAddFriendHandler}>
+                <IonIcon icon={addOutline} />
+              </IonFabButton>
+            </IonFab>
+          )}
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 
