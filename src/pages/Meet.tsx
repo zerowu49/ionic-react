@@ -1,5 +1,5 @@
 import { isPlatform } from '@ionic/core';
-import { IonAlert, IonAvatar, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonPage, IonRow, IonTitle, IonToast, IonToolbar } from '@ionic/react';
 import { addOutline, ban, create, trashBin, trashOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 
@@ -12,6 +12,8 @@ export const FRIENDS_DATA = [
 const Meet: React.FC = () => {
   const [startDeleting, setStartDeleting] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
+  const [isEditing, setIsEditing] = useState(false)
+  const [selectedFriend, setSelectedFriend] = useState<{id: string, name: string, img: string} | null>()
   const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null)
 
   const startAddFriendHandler = () => {
@@ -38,13 +40,48 @@ const Meet: React.FC = () => {
     console.log("Deleting...")
   }
 
-  const editFriendHandler = (event: React.MouseEvent) => {
+  const startEditFriendHandler = (friendId: string) => {
+    console.log(`friendId: ${friendId}`)
     slidingOptionsRef.current?.closeOpened()
     console.log("Editing...")
+    const friend = FRIENDS_DATA.find(f => f.id === friendId)
+    setSelectedFriend(friend)
+    setIsEditing(true)
+  }
+
+  const cancelEditFriendHandler = () => {
+    setIsEditing(false)
   }
 
   return (
     <>
+      <IonModal isOpen={isEditing}>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>Edit Friend</IonTitle>            
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonLabel position="floating">Friend Name</IonLabel>
+                  <IonInput type="text" value={selectedFriend?.name}></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <IonRow className="ion-text-center">
+              <IonCol>
+                <IonButton fill="clear" color="dark" onClick={cancelEditFriendHandler}>Cancel</IonButton>
+              </IonCol>
+              <IonCol>
+                <IonButton color="secondary" expand="block">Save</IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonContent>
+      </IonModal>
       <IonToast isOpen={!!toastMessage}
         message={toastMessage}
         color="warning"
@@ -86,7 +123,7 @@ const Meet: React.FC = () => {
                 </IonItemOption>
               </IonItemOptions>
               <IonItemOptions side="end">
-                <IonItemOption color="warning" onClick={editFriendHandler}>
+                <IonItemOption color="warning" onClick={() => startEditFriendHandler(friend.id)}>
                   <IonIcon slot="icon-only" icon={create}/>
                 </IonItemOption>
               </IonItemOptions>
