@@ -1,7 +1,8 @@
 import { isPlatform } from '@ionic/core';
 import { IonAlert, IonAvatar, IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonPage, IonRow, IonTitle, IonToast, IonToolbar } from '@ionic/react';
-import { addOutline, ban, create, trashBin, trashOutline } from 'ionicons/icons';
-import { useRef, useState } from 'react';
+import { addOutline, ban, create, trashOutline } from 'ionicons/icons';
+import { useContext, useRef, useState } from 'react';
+import { FriendsContext } from '../data/friend-context';
 
 export const FRIENDS_DATA = [
   {id: 'f1', name: 'Adi', img: "https://pict-b.sindonews.net/dyn/620/pena/news/2021/08/23/185/519138/ini-penyebab-lord-adi-gagal-melaju-ke-grand-final-masterchef-indonesia-iuo.jpg"},
@@ -13,11 +14,28 @@ const Meet: React.FC = () => {
   const [startDeleting, setStartDeleting] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
   const [isEditing, setIsEditing] = useState(false)
-  const [selectedFriend, setSelectedFriend] = useState<{id: string, name: string, img: string} | null>()
+  const [selectedFriend, setSelectedFriend] = useState<{
+    id: string, 
+    name: string, 
+    img: string
+  } | null>()
   const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null)
+  const nameRef = useRef<HTMLIonInputElement>(null)
+
+  const friendsCtx = useContext(FriendsContext)
 
   const startAddFriendHandler = () => {
     console.log("adding handler...")
+    setIsEditing(true)
+    setSelectedFriend(null)
+  }
+
+  const saveFriendHandler = () => {
+    const enteredName = nameRef.current!.value
+    if(!enteredName) return
+    if(selectedFriend === null) 
+      friendsCtx.addFriend(enteredName.toString(), '')
+    setIsEditing(false)
   }
 
   const callFriendHandler = () => {
@@ -67,7 +85,7 @@ const Meet: React.FC = () => {
               <IonCol>
                 <IonItem>
                   <IonLabel position="floating">Friend Name</IonLabel>
-                  <IonInput type="text" value={selectedFriend?.name}></IonInput>
+                  <IonInput ref={nameRef} type="text" value={selectedFriend?.name}></IonInput>
                 </IonItem>
               </IonCol>
             </IonRow>
@@ -76,7 +94,7 @@ const Meet: React.FC = () => {
                 <IonButton fill="clear" color="dark" onClick={cancelEditFriendHandler}>Cancel</IonButton>
               </IonCol>
               <IonCol>
-                <IonButton color="secondary" expand="block">Save</IonButton>
+                <IonButton color="secondary" expand="block" onClick={saveFriendHandler}>Save</IonButton>
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -112,7 +130,7 @@ const Meet: React.FC = () => {
         </IonHeader>
         <IonContent fullscreen class='ion-padding'>
           <IonList>
-          {FRIENDS_DATA.map(friend => (
+          {friendsCtx.friends.map(friend => (
             <IonItemSliding key={friend.id} ref={slidingOptionsRef}>
               <IonItemOptions side="start">
                 <IonItemOption color="danger" onClick={blockFriendHandler}>

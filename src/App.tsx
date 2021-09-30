@@ -23,10 +23,9 @@ import './theme/variables.css';
 import { Redirect, Route } from 'react-router';
 import MailDetail from './pages/MailDetail';
 import MailTabs from './pages/MailTabs';
-import Mail from './pages/Mail';
-import Meet from './pages/Meet';
 import { list, settings, warning } from 'ionicons/icons';
 import Settings from './pages/Settings';
+import FriendsContextProvider from './data/FriendsContextProvider';
 
 const App: React.FC = () => {
   console.info("masuk app")
@@ -65,12 +64,14 @@ const App: React.FC = () => {
               </IonList>
             </IonContent>
           </IonMenu>
-          <IonRouterOutlet id="main">
-            <Route exact path='/settings' component={Settings}/>
-            <Route path='/tabs' component={MailTabs}/>
-            <Route path='/mail/:mailId' component={MailDetail}/>
-            <Redirect exact from='/' to='/tabs'/>
-          </IonRouterOutlet>
+          <FriendsContextProvider>
+            <IonRouterOutlet id="main">
+              <Route exact path='/settings' component={Settings}/>
+              <Route path='/tabs' component={MailTabs}/>
+              <Route path='/mail/:mailId' component={MailDetail}/>
+              <Redirect exact from='/' to='/tabs'/>
+            </IonRouterOutlet>
+          </FriendsContextProvider>
       </IonReactRouter>
     </IonApp>
   )
