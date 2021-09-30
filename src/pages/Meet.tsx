@@ -1,5 +1,5 @@
 import { isPlatform } from '@ionic/core';
-import { IonAlert, IonAvatar, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react';
 import { addOutline, ban, create, trashBin, trashOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 
@@ -11,6 +11,7 @@ export const FRIENDS_DATA = [
 
 const Meet: React.FC = () => {
   const [startDeleting, setStartDeleting] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
   const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null)
 
   const startAddFriendHandler = () => {
@@ -33,6 +34,7 @@ const Meet: React.FC = () => {
 
   const deleteFriendHandler = () => {
     setStartDeleting(false)
+    setToastMessage('You have successfully deleted friend!')
     console.log("Deleting...")
   }
 
@@ -43,6 +45,12 @@ const Meet: React.FC = () => {
 
   return (
     <>
+      <IonToast isOpen={!!toastMessage}
+        message={toastMessage}
+        color="warning"
+        duration={2000}
+        onDidDismiss={() => setToastMessage('')}
+      />
       <IonAlert isOpen={startDeleting}
         header="Are you sure?"
         message="Do you want to delete your friend? This cannot be undone."
