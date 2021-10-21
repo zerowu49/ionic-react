@@ -2,7 +2,6 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import {happy, sad} from 'ionicons/icons'
-import Home from './pages/Home';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -25,41 +24,47 @@ import './theme/variables.css';
 import GoodMemories from './pages/GoodMemories';
 import BadMemories from './pages/BadMemories';
 import NewMemories from './pages/NewMemories';
-import MemoriesContextProvider from './data/MemoriesContextProvider';
+import { useContext, useEffect } from 'react';
+import MemoriesContext from './data/memories-context';
 
-const App: React.FC = () => (
-  <IonApp>
+const App: React.FC = () => {
+  const memoriesCtx = useContext(MemoriesContext)
+  const {initContext} = memoriesCtx
+  
+  useEffect(() => {
+    initContext()
+  },[initContext])
+
+  return (<IonApp>
     <IonReactRouter>
-      <MemoriesContextProvider>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/">
-              <Redirect to="/good" />
-            </Route>
-            <Route exact path="/good">
-              <GoodMemories />
-            </Route>
-            <Route exact path="/bad">
-              <BadMemories />
-            </Route>
-            <Route exact path="/new">
-              <NewMemories />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar  color="primary" slot="bottom">
-            <IonTabButton tab="happy" href="/good">
-              <IonIcon icon={happy}  />
-              <IonLabel>Good Memories</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="sad" href="/bad">
-              <IonIcon icon={sad}  />
-              <IonLabel>Bad Memories</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </MemoriesContextProvider>
+      <IonTabs>
+        <IonRouterOutlet>
+          <Route exact path="/">
+            <Redirect to="/good" />
+          </Route>
+          <Route exact path="/good">
+            <GoodMemories />
+          </Route>
+          <Route exact path="/bad">
+            <BadMemories />
+          </Route>
+          <Route exact path="/new">
+            <NewMemories />
+          </Route>
+        </IonRouterOutlet>
+        <IonTabBar  color="primary" slot="bottom">
+          <IonTabButton tab="happy" href="/good">
+            <IonIcon icon={happy}  />
+            <IonLabel>Good Memories</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="sad" href="/bad">
+            <IonIcon icon={sad}  />
+            <IonLabel>Bad Memories</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
     </IonReactRouter>
-  </IonApp>
-);
+  </IonApp>)
+};
 
 export default App;

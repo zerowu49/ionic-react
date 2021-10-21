@@ -4,10 +4,13 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import MemoriesContextProvider from './data/MemoriesContextProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MemoriesContextProvider>
+      <App />
+    </MemoriesContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

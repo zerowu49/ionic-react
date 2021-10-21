@@ -10,6 +10,7 @@
     "@capacitor/filesystem": "^1.0.5",
     "@capacitor/haptics": "1.1.2",
     "@capacitor/keyboard": "1.1.2",
+    "@capacitor/storage": "^1.2.2",
     "@ionic/pwa-elements": "^3.0.2",
     "@ionic/react": "^5.5.0",
     "@ionic/react-hooks": "0.0.8",

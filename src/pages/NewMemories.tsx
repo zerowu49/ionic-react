@@ -10,7 +10,7 @@ import { useHistory } from 'react-router';
 
 const NewMemories: React.FC = () => {
   const [takenPhoto, setTakenPhoto] = useState<{
-    path: string,
+    path: string | undefined,
     preview: string
   }>()
 
@@ -34,7 +34,7 @@ const NewMemories: React.FC = () => {
     })
     console.log(photo)
 
-    if(!photo){
+    if(!photo || !photo.webPath!){
       return
     }
 
@@ -82,6 +82,13 @@ const NewMemories: React.FC = () => {
           <IonLabel position="floating">Memory Title</IonLabel>
           <IonInput type="text" ref={titleRef}></IonInput>  
         </IonItem>
+        <IonItem>
+          <IonLabel position="floating">Memory Type</IonLabel>
+          <IonSelect onIonChange={selectMemoryHandler} value={choosenMemoryType}>
+            <IonSelectOption value='good'>Good Memory</IonSelectOption>
+            <IonSelectOption value='bad'>Bad Memory</IonSelectOption>
+          </IonSelect>
+        </IonItem>
         <IonRow className="ion-text-center ion-padding">
           <IonCol>
             <div className="image-preview">
@@ -97,14 +104,6 @@ const NewMemories: React.FC = () => {
         <IonRow className="ion-margin-top">
           <IonCol className="ion-text-center">
             <IonButton onClick={addMemoryHandler}>Add Memory</IonButton>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <IonSelect onIonChange={selectMemoryHandler} value={choosenMemoryType}>
-              <IonSelectOption value='good'>Good Memory</IonSelectOption>
-              <IonSelectOption value='bad'>Bad Memory</IonSelectOption>
-            </IonSelect>
           </IonCol>
         </IonRow>
       </IonContent>

@@ -1,7 +1,8 @@
 import { isPlatform } from '@ionic/core';
-import { IonButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { add } from 'ionicons/icons';
 import { useContext } from 'react';
+import MemoryItem from '../components/MemoryItem';
 import MemoriesContext from '../data/memories-context';
 
 const GoodMemories: React.FC = () => {
@@ -19,16 +20,7 @@ const GoodMemories: React.FC = () => {
     )
   }else{
     layout = goodMemories.map(memory => {
-      return (<IonRow key={memory.id}>
-        <IonCol>
-          <IonCard>
-            <img src={memory.base64Url} alt={memory.title}/>
-            <IonCardHeader>
-              <IonCardTitle>{memory.title}</IonCardTitle>
-            </IonCardHeader>
-          </IonCard>
-        </IonCol>
-      </IonRow>)
+      return <MemoryItem memory={memory}/>
     })
   }
 
@@ -47,7 +39,6 @@ const GoodMemories: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <h2>Good Memories</h2>
         <IonGrid>
           {layout}
         </IonGrid>  

@@ -1,7 +1,7 @@
-import { IonButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import { add } from 'ionicons/icons';
 import { useContext } from 'react';
-import ExploreContainer from '../components/ExploreContainer';
+import MemoryItem from '../components/MemoryItem';
 import MemoriesContext from '../data/memories-context';
 
 const BadMemories: React.FC = () => {
@@ -19,16 +19,7 @@ const BadMemories: React.FC = () => {
     )
   }else{
     layout = badMemories.map(memory => {
-      return (<IonRow key={memory.id}>
-        <IonCol>
-          <IonCard>
-            <img src={memory.base64Url} alt={memory.title}/>
-            <IonCardHeader>
-              <IonCardTitle>{memory.title}</IonCardTitle>
-            </IonCardHeader>
-          </IonCard>
-        </IonCol>
-      </IonRow>)
+      return <MemoryItem memory={memory}/>
     })
   }
 
@@ -47,7 +38,6 @@ const BadMemories: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <h2>Bad Memories</h2>
         <IonGrid>
           {layout}
         </IonGrid>  
