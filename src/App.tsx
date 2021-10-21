@@ -25,36 +25,39 @@ import './theme/variables.css';
 import GoodMemories from './pages/GoodMemories';
 import BadMemories from './pages/BadMemories';
 import NewMemories from './pages/NewMemories';
+import MemoriesContextProvider from './data/MemoriesContextProvider';
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/">
-            <Redirect to="/good" />
-          </Route>
-          <Route exact path="/good">
-            <GoodMemories />
-          </Route>
-          <Route exact path="/bad">
-            <BadMemories />
-          </Route>
-          <Route exact path="/new">
-            <NewMemories />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar  color="primary" slot="bottom">
-          <IonTabButton tab="happy" href="/good">
-            <IonIcon icon={happy}  />
-            <IonLabel>Good Memories</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="sad" href="/bad">
-            <IonIcon icon={sad}  />
-            <IonLabel>Bad Memories</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+      <MemoriesContextProvider>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/">
+              <Redirect to="/good" />
+            </Route>
+            <Route exact path="/good">
+              <GoodMemories />
+            </Route>
+            <Route exact path="/bad">
+              <BadMemories />
+            </Route>
+            <Route exact path="/new">
+              <NewMemories />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar  color="primary" slot="bottom">
+            <IonTabButton tab="happy" href="/good">
+              <IonIcon icon={happy}  />
+              <IonLabel>Good Memories</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="sad" href="/bad">
+              <IonIcon icon={sad}  />
+              <IonLabel>Bad Memories</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </MemoriesContextProvider>
     </IonReactRouter>
   </IonApp>
 );

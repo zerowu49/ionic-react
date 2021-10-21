@@ -1,10 +1,12 @@
-import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { camera } from 'ionicons/icons';
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import './NewMemories.css'
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
+import MemoriesContext from '../data/memories-context';
+import { useHistory } from 'react-router';
 
 const NewMemories: React.FC = () => {
   const [takenPhoto, setTakenPhoto] = useState<{
@@ -15,13 +17,16 @@ const NewMemories: React.FC = () => {
   const [choosenMemoryType, setChoosenMemoryType] = useState<'good'|'bad'>('good')
   const titleRef = useRef<HTMLIonInputElement>(null)
 
+  const memoriesCtx = useContext(MemoriesContext)
+  const history = useHistory()
+
   const selectMemoryHandler = (event: CustomEvent) => {
     const selectMemoryType = event.detail.value
     setChoosenMemoryType(selectMemoryType)
   }
 
   const takePhotoHandler = async () => {
-    const photo = Camera.getPhoto({
+    const photo = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
       quality: 80,
@@ -29,19 +34,22 @@ const NewMemories: React.FC = () => {
     })
     console.log(photo)
 
-    if(!photo || !(await photo).path || !(await photo).webPath){
+    if(!photo){
       return
     }
 
     setTakenPhoto({
-      path: (await photo).path!,
-      preview: (await photo).webPath!
+      path: photo.path!,
+      preview: photo.webPath!
     })
   }
 
   const addMemoryHandler = async () => {
     const enteredTitle = titleRef.current?.value
     if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !takenPhoto || !choosenMemoryType){
+      console.info(`enteredTitle: ${enteredTitle}`)
+      console.info(`takenPhoto: ${takenPhoto}`)
+      console.info(`choosenMemoryType: ${choosenMemoryType}`)
       console.log("ada yg tidak benar")
       return
     }
@@ -53,6 +61,10 @@ const NewMemories: React.FC = () => {
       data: base64,
       directory: Directory.Data,
     })
+
+    // Add to Context
+    memoriesCtx.addMemory(fileName, base64, enteredTitle.toString(), choosenMemoryType)
+    history.length > 0 ? history.goBack() : history.replace('/good')
   }
 
   return (
@@ -65,10 +77,12 @@ const NewMemories: React.FC = () => {
           <IonTitle>Add New Memory</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <h2>Memory Title</h2>
-        <IonInput type="text" ref={titleRef}></IonInput>  
-        <IonRow className="ion-text-center">
+      <IonContent fullscreen className="ion-padding">
+        <IonItem>
+          <IonLabel position="floating">Memory Title</IonLabel>
+          <IonInput type="text" ref={titleRef}></IonInput>  
+        </IonItem>
+        <IonRow className="ion-text-center ion-padding">
           <IonCol>
             <div className="image-preview">
               {!takenPhoto && <h3>No photo choosen.</h3>}
@@ -87,7 +101,7 @@ const NewMemories: React.FC = () => {
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonSelect onIonChange={selectMemoryHandler} value='good'>
+            <IonSelect onIonChange={selectMemoryHandler} value={choosenMemoryType}>
               <IonSelectOption value='good'>Good Memory</IonSelectOption>
               <IonSelectOption value='bad'>Bad Memory</IonSelectOption>
             </IonSelect>

@@ -1,6 +1,6 @@
 {
-	"appId": "com.ionic.memories",
-	"appName": "Memories",
-	"webDir": "build",
-	"bundledWebRuntime": false
+  "appId": "com.ionic.memories",
+  "appName": "Memories",
+  "webDir": "build",
+  "bundledWebRuntime": false
 }
