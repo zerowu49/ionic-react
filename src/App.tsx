@@ -26,6 +26,7 @@ import BadMemories from './pages/BadMemories';
 import NewMemories from './pages/NewMemories';
 import { useContext, useEffect } from 'react';
 import MemoriesContext from './data/memories-context';
+import Location from './pages/Location';
 
 const App: React.FC = () => {
   const memoriesCtx = useContext(MemoriesContext)
@@ -41,6 +42,9 @@ const App: React.FC = () => {
         <IonRouterOutlet>
           <Route exact path="/">
             <Redirect to="/good" />
+          </Route>
+          <Route exact path="/location">
+            <Location />
           </Route>
           <Route exact path="/good">
             <GoodMemories />
