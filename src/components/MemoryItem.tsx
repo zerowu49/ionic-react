@@ -7,7 +7,7 @@ const MemoryItem: React.FC<{memory: Memory}> = props => {
 
   const containerStyle = {
     width: '100%',
-    height: '5rem',
+    height: '10rem',
   }
 
   const selectPos = (e: google.maps.MapMouseEvent) => {

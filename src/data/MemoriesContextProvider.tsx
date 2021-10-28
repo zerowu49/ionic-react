@@ -26,7 +26,9 @@ const MemoriesContextProvider: React.FC = props => {
                 id: memory.id,
                 title: memory.title,
                 imagePath: memory.imagePath,
-                type: memory.type
+                type: memory.type,
+                lat: memory.lat, 
+                lng: memory.lng,
             }
         })
         Storage.set({key: 'memories',value: JSON.stringify(storableMemories)})

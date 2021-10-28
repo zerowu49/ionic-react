@@ -39,7 +39,7 @@ const Location: React.FC = () => {
 
   const containerStyle = {
     width: '100%',
-    height: '100%',
+    height: '80%',
   }
 
   const pos = {lat: -6,lng:106}
