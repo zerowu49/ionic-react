@@ -7,12 +7,15 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
 import MemoriesContext from '../data/memories-context';
 import { useHistory } from 'react-router';
+import LocationItem from '../components/LocationItem';
 
 const NewMemories: React.FC = () => {
   const [takenPhoto, setTakenPhoto] = useState<{
     path: string | undefined,
     preview: string
   }>()
+  const [lat, setLat] = useState(-6)
+  const [lng, setLng] = useState(106)
 
   const [choosenMemoryType, setChoosenMemoryType] = useState<'good'|'bad'>('good')
   const titleRef = useRef<HTMLIonInputElement>(null)
@@ -67,6 +70,19 @@ const NewMemories: React.FC = () => {
     history.length > 0 ? history.goBack() : history.replace('/good')
   }
 
+  const selectPos = (e: google.maps.MapMouseEvent) => {
+    console.log("selected")
+    console.warn(e)
+    if(e.latLng?.lat()) setLat(e.latLng?.lat())
+    if(e.latLng?.lng()) setLng(e.latLng?.lng())
+  }
+
+  
+  const containerStyle = {
+    width: '100%',
+    height: '10rem',
+  }
+  
   return (
     <IonPage>
       <IonHeader>
@@ -99,6 +115,12 @@ const NewMemories: React.FC = () => {
               <IonIcon slot="start"  icon={camera} />
               <IonLabel>Take Photo</IonLabel>
             </IonButton>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <></>
+            <LocationItem lat={lat} lng={lng} selectPos={selectPos} containerStyle={containerStyle}/>
           </IonCol>
         </IonRow>
         <IonRow className="ion-margin-top">

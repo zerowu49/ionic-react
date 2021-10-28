@@ -1,6 +1,6 @@
 import { isPlatform } from '@ionic/core';
 import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { add } from 'ionicons/icons';
+import { add, location } from 'ionicons/icons';
 import { useContext } from 'react';
 import MemoryItem from '../components/MemoryItem';
 import MemoriesContext from '../data/memories-context';
@@ -27,15 +27,22 @@ const GoodMemories: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="primary">
+        <IonToolbar>
           <IonTitle>Good Memories</IonTitle>
-          {isPlatform("ios") && <IonButtons slot="end">
-            <IonRouterLink routerLink="/new">
+          <IonButtons slot="end">
+            <IonRouterLink routerLink="/location">
               <IonButton>
-                <IonIcon slot="icon-only"  icon={add} />
+                <IonIcon slot="icon-only"  icon={location} />
               </IonButton>
             </IonRouterLink>
-          </IonButtons>}
+            {isPlatform("ios") && 
+              <IonRouterLink routerLink="/new">
+                <IonButton>
+                  <IonIcon slot="icon-only"  icon={add} />
+                </IonButton>
+              </IonRouterLink>
+            }
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

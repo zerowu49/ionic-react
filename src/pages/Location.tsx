@@ -2,6 +2,7 @@ import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from 
 import { Geolocation } from "@capacitor/geolocation";
 import { GoogleMap, InfoWindow, LoadScript, Marker } from "@react-google-maps/api";
 import { useState } from 'react';
+import LocationItem from '../components/LocationItem';
 
 const Location: React.FC = () => {
   const [lat, setLat] = useState(-6)
@@ -55,23 +56,7 @@ const Location: React.FC = () => {
         <IonButton onClick={trackPosition}>Track Position</IonButton>
       </IonContent>
       {/* AIzaSyAxwIz1YykJnT5cVkyQW0D0vzRa5cVsgTA */}
-      <LoadScript googleMapsApiKey="AIzaSyCTI5O1n2FUwPiizdaG115Wp4Dc5939r_Y">
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          // center={pos}
-          onClick={selectPos}
-          center={{lat:lat,lng:lng}}
-          zoom={18}>
-            <></>
-            {/* <Marker position={pos} /> */}
-            {/* <InfoWindow position={pos}>
-              <div>
-                <h1>Kampus paling keren</h1>
-              </div>
-            </InfoWindow> */}
-            <Marker position={{lat:lat,lng:lng}} />
-        </GoogleMap>
-      </LoadScript>
+      <LocationItem lat={lat} lng={lng} selectPos={selectPos} containerStyle={containerStyle} />
     </IonPage>
   );
 };
