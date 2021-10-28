@@ -66,7 +66,7 @@ const NewMemories: React.FC = () => {
     })
 
     // Add to Context
-    memoriesCtx.addMemory(fileName, base64, enteredTitle.toString(), choosenMemoryType)
+    memoriesCtx.addMemory(fileName, base64, enteredTitle.toString(), choosenMemoryType, lat,lng)
     history.length > 0 ? history.goBack() : history.replace('/good')
   }
 

@@ -5,13 +5,15 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 
 const MemoriesContextProvider: React.FC = props => {
     const [memories, setMemories] = useState<Memory[]>([])
-    const addMemory = (path: string, base64Data: string, title: string, type: 'good'|'bad') => {
+    const addMemory = (path: string, base64Data: string, title: string, type: 'good'|'bad',lat: number, lng:number) => {
         const newMemory: Memory = {
             id: Math.random().toString(),
             title,
             type,
             imagePath: path,
-            base64Url: base64Data
+            base64Url: base64Data,
+            lat, 
+            lng
         }
         setMemories(curMemories => {
             return [...curMemories, newMemory];
@@ -47,7 +49,9 @@ const MemoriesContextProvider: React.FC = props => {
                     title: storedMemory.title,
                     imagePath: storedMemory.imagePath,
                     type: storedMemory.type,
-                    base64Url: 'data:image/jpeg;base64,' + file.data
+                    base64Url: 'data:image/jpeg;base64,' + file.data,
+                    lat: storedMemory.lat, 
+                    lng: storedMemory.lng,
                 })
             }
             setMemories(loadedMemories)
