@@ -26,7 +26,7 @@ import BadMemories from './pages/BadMemories';
 import NewMemories from './pages/NewMemories';
 import { useContext, useEffect } from 'react';
 import MemoriesContext from './data/memories-context';
-import Location from './pages/Location';
+import Student from './pages/Student';
 
 const App: React.FC = () => {
   const memoriesCtx = useContext(MemoriesContext)
@@ -43,8 +43,8 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Redirect to="/good" />
           </Route>
-          <Route exact path="/location">
-            <Location />
+          <Route exact path="/student">
+            <Student />
           </Route>
           <Route exact path="/good">
             <GoodMemories />
