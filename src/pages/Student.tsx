@@ -1,6 +1,7 @@
-import { IonAvatar, IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonRouterLink, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import axios, {AxiosResponse} from 'axios';
+import { add } from 'ionicons/icons';
 interface StudentModel{
   nim: string;
   nama: string;
@@ -36,6 +37,13 @@ const Student: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Student</IonTitle>
+          <IonButtons slot="end">
+            <IonRouterLink routerLink="/add-student">
+              <IonButton>
+                <IonIcon slot="icon-only"  icon={add} />
+              </IonButton>
+            </IonRouterLink>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

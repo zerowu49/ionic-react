@@ -27,6 +27,7 @@ import NewMemories from './pages/NewMemories';
 import { useContext, useEffect } from 'react';
 import MemoriesContext from './data/memories-context';
 import Student from './pages/Student';
+import AddStudent from './pages/AddStudent';
 
 const App: React.FC = () => {
   const memoriesCtx = useContext(MemoriesContext)
@@ -45,6 +46,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/student">
             <Student />
+          </Route>
+          <Route exact path="/add-student">
+            <AddStudent />
           </Route>
           <Route exact path="/good">
             <GoodMemories />
