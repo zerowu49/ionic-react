@@ -1,6 +1,6 @@
 import { IonAvatar, IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
-
+import axios, {AxiosResponse} from 'axios';
 interface StudentModel{
   nim: string;
   nama: string;
@@ -9,17 +9,16 @@ interface StudentModel{
 }
 
 const Student: React.FC = () => {
-  const [data, setData] = useState<Response>()
+  const [data, setData] = useState<AxiosResponse>()
   const [students, setStudents] = useState<Array<StudentModel>>([])
   const url = "http://localhost/memories/select_all_students.php"
   
   useEffect(() => {
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        setData(data)
-        console.log(data)
-        setStudents(data.students)
+    axios.get(url)
+      .then(response => {
+        console.log(response)
+        setData(response)
+        setStudents(response?.data.students)
       })
   }, [])
 
@@ -27,7 +26,7 @@ const Student: React.FC = () => {
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        setData(data)
+        setStudents(data.students)
         console.log(data)
       })
   }
