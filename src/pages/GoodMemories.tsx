@@ -1,16 +1,27 @@
 import { isPlatform } from '@ionic/core';
 import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { add, people } from 'ionicons/icons';
-import { useContext } from 'react';
+import { useEffect, useState } from 'react';
 import MemoryItem from '../components/MemoryItem';
-import MemoriesContext from '../data/memories-context';
+import { Memory } from '../data/memories-context';
 
 const GoodMemories: React.FC = () => {
-  const memoriesCtx = useContext(MemoriesContext)
-  const goodMemories = memoriesCtx.memories.filter(memory => memory.type === 'good')
-  
+  const url = "http://localhost/memories/good.php"
+  const [good, setGood] = useState<Array<Memory>>([])
+
+  useEffect(() => {
+    fetch(url)
+      .then(res => res.json())
+      .then(response => response.memories)
+      .then((memories : Array<Memory>) => {
+        memories.map(async mem => mem.base64Url = await base64FromPath(mem.imagePath));
+        setGood(memories)
+      })
+  }, [])
+
   let layout
-  if(goodMemories.length === 0){
+  if(good.length === 0){
     layout = (
       <IonRow>
         <IonCol className="ion-text-center">
@@ -19,7 +30,7 @@ const GoodMemories: React.FC = () => {
       </IonRow>
     )
   }else{
-    layout = goodMemories.map(memory => {
+    layout = good.map(memory => {
       return <MemoryItem memory={memory}/>
     })
   }

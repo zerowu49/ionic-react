@@ -14,6 +14,8 @@ const MemoryItem: React.FC<{memory: Memory}> = props => {
     console.log("selected")
   }
 
+  console.log(memory)
+
   return (
     <IonRow key={memory.id}>
       <IonCol>

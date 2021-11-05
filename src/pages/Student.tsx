@@ -12,7 +12,7 @@ interface StudentModel{
 const Student: React.FC = () => {
   const [data, setData] = useState<AxiosResponse>()
   const [students, setStudents] = useState<Array<StudentModel>>([])
-  const url = "http://localhost/memories/select_all_students.php"
+  const url = "http://localhost/student/select_all_students.php"
   
   useEffect(() => {
     axios.get(url)

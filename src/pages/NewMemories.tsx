@@ -8,6 +8,7 @@ import { base64FromPath } from "@ionic/react-hooks/filesystem";
 import MemoriesContext from '../data/memories-context';
 import { useHistory } from 'react-router';
 import LocationItem from '../components/LocationItem';
+import axios from 'axios';
 
 const NewMemories: React.FC = () => {
   const [takenPhoto, setTakenPhoto] = useState<{
@@ -66,8 +67,23 @@ const NewMemories: React.FC = () => {
     })
 
     // Add to Context
-    memoriesCtx.addMemory(fileName, base64, enteredTitle.toString(), choosenMemoryType, lat,lng)
-    history.length > 0 ? history.goBack() : history.replace('/good')
+    // memoriesCtx.addMemory(fileName, base64, enteredTitle.toString(), choosenMemoryType, lat,lng)
+    // history.length > 0 ? history.goBack() : history.replace('/good')
+
+    // Add to database
+    const formData = new FormData();
+
+    formData.append('photo', takenPhoto!.preview);
+    formData.append('id', Math.random().toString());
+    formData.append('path', fileName);
+    formData.append('title', enteredTitle.toString());
+    formData.append('type', choosenMemoryType);
+    formData.append('longitude', lng.toString());
+    formData.append('latitude', lat.toString());
+
+    axios.post('http://localhost/memories/new.php', formData).then(response => {
+        console.log(response);
+    });
   }
 
   const selectPos = (e: google.maps.MapMouseEvent) => {

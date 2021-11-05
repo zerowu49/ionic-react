@@ -1,10 +1,10 @@
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 import { useRef, useState } from "react";
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 
 const AddStudent: React.FC = () => {
   const [data, setData] = useState('')
-  const url = "http://localhost/memories/insert_new_students.php"
+  const url = "http://localhost/student/insert_new_students.php"
   const nim = useRef<HTMLIonInputElement>(null)
   const nama = useRef<HTMLIonInputElement>(null)
   const prodi = useRef<HTMLIonInputElement>(null)
@@ -14,17 +14,17 @@ const AddStudent: React.FC = () => {
 
   const showToast = (msg: string) => {
     let color 
-      if(msg == "Data Mahasiswa tidak lengkap") color = 'danger'
-      else color = 'success'
-      
-      presentToast({
-        buttons: [
-          { text: 'Okay', handler: () => dismissToast() },
-        ],
-        color: color,
-        message: msg,
-        duration: 2000,
-      }) 
+    if(msg == "Data Mahasiswa tidak lengkap") color = 'danger'
+    else color = 'success'
+    
+    presentToast({
+      buttons: [
+        { text: 'Okay', handler: () => dismissToast() },
+      ],
+      color: color,
+      message: msg,
+      duration: 2000,
+    }) 
   }
 
   const fileChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +39,8 @@ const AddStudent: React.FC = () => {
     const inProdi = prodi.current?.value as string
 
     console.log(inNim)
+    console.log(inNama)
+    console.log(inProdi)
 
     console.info(formData)
     formData.append('nim',inNim)
