@@ -1,7 +1,13 @@
-import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonRouterLink, IonTitle, IonToolbar } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonRouterLink, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 import axios, {AxiosResponse} from 'axios';
 import { add } from 'ionicons/icons';
+import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { getFirestore } from "firebase/firestore";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
+import '../firebaseConfig' // Invoking firebase config
+
 interface StudentModel{
   nim: string;
   nama: string;
@@ -10,27 +16,69 @@ interface StudentModel{
 }
 
 const Student: React.FC = () => {
-  const [data, setData] = useState<AxiosResponse>()
-  const [students, setStudents] = useState<Array<StudentModel>>([])
-  const url = "http://localhost/student/select_all_students.php"
-  
-  useEffect(() => {
-    axios.get(url)
-      .then(response => {
-        console.log(response)
-        setData(response)
-        setStudents(response?.data.students)
-      })
-  }, [])
+  const db = getFirestore()
+  const [selectedFile, setSelectedFile] = useState<File>()
+  const [fileName, setFileName] = useState('')
+  const storage = getStorage()
+  const [presentToast,dismissToast] = useIonToast()
 
-  const getAllDataHandler = () => {
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        setStudents(data.students)
-        console.log(data)
+  const [students, setStudents] = useState<Array<any>>([])
+
+  useEffect(() => {
+    async function getData() {
+      const querySnapshot = await getDocs(collection(db,"students"))
+      console.log('querySnapshot: ',querySnapshot)
+      setStudents(querySnapshot.docs.map((doc) => ({
+        ...doc.data(), id:doc.id
+      })))
+
+      querySnapshot.forEach(doc => {
+        console.log(`${doc.id} => ${doc.data()}`)
+        console.log(doc.data())
+        console.log('doc: ',doc)
       })
+    }
+    getData()
+  },[])
+
+  const addData = async() =>{
+    try{
+      const docRef = await addDoc(collection(db,'users'),{
+        first: 'John',
+        last: 'Thor',
+        born: 1985,
+      })
+      dismissToast()
+      presentToast({
+        message: `Document written with id: ${docRef.id}`,
+        color: 'success',
+        duration: 1000,
+      })
+    }
+    catch(err){
+      dismissToast()
+      presentToast({
+        message: `Error adding document: ${err}`,
+        color: 'danger',
+        duration: 1000,
+      })
+    }
   }
+
+  const fileChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile(event.target!.files![0])
+    setFileName(event.target!.files![0].name)
+  }
+
+  const insertHandler = async() => {
+    const storageRef = ref(storage,fileName)
+    uploadBytes(storageRef,selectedFile as Blob).then((res) =>{
+      console.log("Upload success: ",res)
+    }).catch(err => {
+      console.log("Upload error: ",err)
+    })
+  }
+
   
   return (
     <IonPage>
@@ -47,12 +95,15 @@ const Student: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonButton onClick={getAllDataHandler}>Get All Data</IonButton>
+        <IonButton onClick={addData}>Simulate Add Data</IonButton>
+        <br/>
+        <input type="file" onChange={fileChangeHandler} />
+        <IonButton onClick={insertHandler}>Simpan</IonButton>
         <IonList>
-          {students.map((student) => {
-            return <IonItem key={student.nim}>
+          {students.map(student => {
+            return <IonItem key={student.id}>
               <IonAvatar slot='start'>
-                <img src={"http://localhost/memories/" + (student.foto ? student.foto : 'uploads/man.jfif')} alt="" />
+                <img src={student.fotoUrl}/>
               </IonAvatar>
               <IonLabel>
                 {student.nim}<br/>

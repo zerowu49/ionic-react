@@ -1,68 +1,64 @@
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 import { useRef, useState } from "react";
 import axios from 'axios';
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 const AddStudent: React.FC = () => {
-  const [data, setData] = useState('')
-  const url = "http://localhost/student/insert_new_students.php"
   const nim = useRef<HTMLIonInputElement>(null)
   const nama = useRef<HTMLIonInputElement>(null)
   const prodi = useRef<HTMLIonInputElement>(null)
   const [presentToast, dismissToast] = useIonToast();
 
+  const db = getFirestore()
+  const storage = getStorage()
+  
   const [selectedFile, setSelectedFile] = useState<File>()
-
-  const showToast = (msg: string) => {
-    let color 
-    if(msg == "Data Mahasiswa tidak lengkap") color = 'danger'
-    else color = 'success'
-    
-    presentToast({
-      buttons: [
-        { text: 'Okay', handler: () => dismissToast() },
-      ],
-      color: color,
-      message: msg,
-      duration: 2000,
-    }) 
-  }
+  const [fileName, setFileName] = useState('')
 
   const fileChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFile(event.target!.files![0]);
+    setFileName(event.target!.files![0].name)
   }
 
-  const insertHandler = () => {
-    const formData = new FormData()
-
-    const inNim = nim.current?.value as string
-    const inNama = nama.current?.value as string
-    const inProdi = prodi.current?.value as string
-
-    console.log(inNim)
-    console.log(inNama)
-    console.log(inProdi)
-
-    console.info(formData)
-    formData.append('nim',inNim)
-    formData.append('nama',inNama)
-    formData.append('prodi',inProdi)
-    formData.append('foto',selectedFile as File)
-    console.info(formData)
-
-    // fetch(url,{
-    //   method: 'post',
-    //   body: formData
-    // }).then(res => res.json())
-    // .then(data=>{
-    //   showToast(data.message)
-    // })
-
-
-    axios.post(url,formData)
-      .then(res => {
-        console.log(res)
-        showToast(res.data.message)
+  const addData = async(url:string) =>{
+    try{
+      const docRef = await addDoc(collection(db,'students'),{
+        nim: nim.current?.value,
+        nama: nama.current?.value,
+        prodi: prodi.current?.value,
+        foto: fileName,
+        fotoUrl: url,
       })
+      dismissToast()
+      presentToast({
+        message: `Document written with id: ${docRef.id}`,
+        color: 'success',
+        duration: 1000,
+      })
+    }
+    catch(err){
+      dismissToast()
+      presentToast({
+        message: `Error adding document: ${err}`,
+        color: 'danger',
+        duration: 1000,
+      })
+    }
+  }
+
+  const insertHandler = async() => {
+    const storageRef = ref(storage,fileName)
+    uploadBytes(storageRef,selectedFile as Blob).then((res) =>{
+      console.log("Upload success: ",res)
+      getDownloadURL(storageRef).then(url => {
+        addData(url)
+      }).catch(err => {
+        console.log("Failed get downnload url: ",err)
+      })
+    }).catch(err => {
+      console.log("Upload error: ",err)
+    })
   }
 
   return (
