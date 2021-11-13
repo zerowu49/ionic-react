@@ -1,9 +1,8 @@
 import { IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
-import { Memory } from "../data/memories-context";
 import LocationItem from "./LocationItem";
 
-const MemoryItem: React.FC<{memory: Memory}> = props => {
-  const { memory } = props
+const MemoryItem: React.FC<{memory: any}> = props => {
+  const { id,title,type, photo, latitude, longitude } = props.memory
 
   const containerStyle = {
     width: '100%',
@@ -14,16 +13,15 @@ const MemoryItem: React.FC<{memory: Memory}> = props => {
     console.log("selected")
   }
 
-  console.log(memory)
 
   return (
-    <IonRow key={memory.id}>
+    <IonRow key={id}>
       <IonCol>
         <IonCard>
-          <img src={memory.base64Url} alt={memory.title}/>
-          <LocationItem lat={memory.lat} lng={memory.lng} selectPos={selectPos} containerStyle={containerStyle}/>
+          <img src={photo}/>
+          <LocationItem lat={latitude} lng={longitude} selectPos={selectPos} containerStyle={containerStyle}/>
           <IonCardHeader>
-            <IonCardTitle>{memory.title}</IonCardTitle>
+            <IonCardTitle>{title}</IonCardTitle>
           </IonCardHeader>
         </IonCard>
       </IonCol>

@@ -1,6 +1,5 @@
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 import { useRef, useState } from "react";
-import axios from 'axios';
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 

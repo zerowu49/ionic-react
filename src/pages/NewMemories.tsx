@@ -1,4 +1,4 @@
-import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { camera } from 'ionicons/icons';
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import './NewMemories.css'
@@ -9,81 +9,87 @@ import MemoriesContext from '../data/memories-context';
 import { useHistory } from 'react-router';
 import LocationItem from '../components/LocationItem';
 import axios from 'axios';
+import { addDoc, collection, getFirestore } from '@firebase/firestore';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { url } from 'inspector';
 
 const NewMemories: React.FC = () => {
-  const [takenPhoto, setTakenPhoto] = useState<{
-    path: string | undefined,
-    preview: string
-  }>()
   const [lat, setLat] = useState(-6)
   const [lng, setLng] = useState(106)
 
   const [choosenMemoryType, setChoosenMemoryType] = useState<'good'|'bad'>('good')
   const titleRef = useRef<HTMLIonInputElement>(null)
+  const [selectedFile, setSelectedFile] = useState<File>()
+  const [fileName, setFileName] = useState('')
 
-  const memoriesCtx = useContext(MemoriesContext)
-  const history = useHistory()
+  // Add to Firestore
+  const [presentToast, dismissToast] = useIonToast();
+  const db = getFirestore()
+  const storage = getStorage()
 
   const selectMemoryHandler = (event: CustomEvent) => {
     const selectMemoryType = event.detail.value
     setChoosenMemoryType(selectMemoryType)
   }
-
-  const takePhotoHandler = async () => {
-    const photo = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
-      source: CameraSource.Camera,
-      quality: 80,
-      width: 500,
-    })
-    console.log(photo)
-
-    if(!photo || !photo.webPath!){
-      return
-    }
-
-    setTakenPhoto({
-      path: photo.path!,
-      preview: photo.webPath!
-    })
+  
+  const fileChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile(event.target!.files![0]);
+    setFileName(event.target!.files![0].name)
   }
 
   const addMemoryHandler = async () => {
     const enteredTitle = titleRef.current?.value
-    if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !takenPhoto || !choosenMemoryType){
+    if(!enteredTitle || 
+      enteredTitle.toString().trim().length === 0 || 
+      !choosenMemoryType || 
+      fileName == ""){
       console.info(`enteredTitle: ${enteredTitle}`)
-      console.info(`takenPhoto: ${takenPhoto}`)
       console.info(`choosenMemoryType: ${choosenMemoryType}`)
+      console.info(`filename: ${fileName}`)
       console.log("ada yg tidak benar")
       return
     }
-
-    const fileName = new Date().getTime() + '.jpeg'
-    const base64 = await base64FromPath(takenPhoto!.preview)
-    await Filesystem.writeFile({
-      path: fileName,
-      data: base64,
-      directory: Directory.Data,
+    
+    const storageRef = ref(storage,fileName)
+    uploadBytes(storageRef,selectedFile as Blob).then((res) =>{
+      console.log("Upload success: ",res)
+      getDownloadURL(storageRef).then(url => {
+        submitTextData(url)
+      }).catch(err => {
+        console.log("Failed get downnload url: ",err)
+      })
+    }).catch(err => {
+      console.log("Upload error: ",err)
     })
+  }
 
-    // Add to Context
-    // memoriesCtx.addMemory(fileName, base64, enteredTitle.toString(), choosenMemoryType, lat,lng)
-    // history.length > 0 ? history.goBack() : history.replace('/good')
+  const submitTextData = async (url:string) => {
+    const enteredTitle = titleRef.current?.value
 
     // Add to database
-    const formData = new FormData();
+    try {    
+      const docRef = await addDoc(collection(db,'memories'),{
+        title: enteredTitle?.toString(),
+        type: choosenMemoryType,
+        photo: url,
+        longitude: lng,
+        latitude: lat,
+      })
+      dismissToast()
+      presentToast({
+        message: `Document written with id: ${docRef.id}`,
+        color: 'success',
+        duration: 1000,
+      })
+    } catch (err) {
+      dismissToast()
+      presentToast({
+        message: `Error adding document: ${err}`,
+        color: 'danger',
+        duration: 1000,
+      })
+    }
 
-    formData.append('photo', takenPhoto!.preview);
-    formData.append('id', Math.random().toString());
-    formData.append('path', fileName);
-    formData.append('title', enteredTitle.toString());
-    formData.append('type', choosenMemoryType);
-    formData.append('longitude', lng.toString());
-    formData.append('latitude', lat.toString());
-
-    axios.post('http://localhost/memories/new.php', formData).then(response => {
-        console.log(response);
-    });
   }
 
   const selectPos = (e: google.maps.MapMouseEvent) => {
@@ -123,14 +129,11 @@ const NewMemories: React.FC = () => {
         </IonItem>
         <IonRow className="ion-text-center ion-padding">
           <IonCol>
-            <div className="image-preview">
-              {!takenPhoto && <h3>No photo choosen.</h3>}
-              {takenPhoto && <img src={takenPhoto.preview} alt='Preview' />}
-            </div>
-            <IonButton fill="clear" onClick={takePhotoHandler}>
+            {/* <IonButton fill="clear" onClick={takePhotoHandler}>
               <IonIcon slot="start"  icon={camera} />
               <IonLabel>Take Photo</IonLabel>
-            </IonButton>
+            </IonButton> */}
+            <input type="file" onChange={fileChangeHandler} />
           </IonCol>
         </IonRow>
         <IonRow>

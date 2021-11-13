@@ -1,23 +1,32 @@
 import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import { add } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import MemoryItem from '../components/MemoryItem';
 import { Memory } from '../data/memories-context';
 
 const BadMemories: React.FC = () => {
-  const url = "http://localhost/memories/good.php"
-  const [bad, setBad] = useState<Array<Memory>>([])
+  const db = getFirestore()
+  const [bad, setBad] = useState<Array<any>>([])
 
   useEffect(() => {
-    fetch(url)
-      .then(res => res.json())
-      .then(response => response.memories)
-      .then((memories : Array<Memory>) => {
-        memories.map(async mem => mem.base64Url = await base64FromPath(mem.imagePath));
-        setBad(memories)
+    async function getData() {
+      const querySnapshot = await getDocs(collection(db,"memories"))
+
+      querySnapshot.forEach(doc => {
+        console.log(doc.data())
+        // Check whether the type is bad
+        if(doc.data().type==="bad"){
+          setBad(before => {
+            return before.concat({...doc.data(),id: doc.id})
+          })
+        }
       })
-  }, [])
+    }
+    getData()
+  },[])
+  
   let layout
   if(bad.length === 0){
     layout = (

@@ -29,6 +29,9 @@ import MemoriesContext from './data/memories-context';
 import Student from './pages/Student';
 import AddStudent from './pages/AddStudent';
 
+ // Invoking firebase config
+import './firebaseConfig'
+
 const App: React.FC = () => {
   const memoriesCtx = useContext(MemoriesContext)
   const {initContext} = memoriesCtx

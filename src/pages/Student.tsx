@@ -6,8 +6,6 @@ import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { getFirestore } from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 
-import '../firebaseConfig' // Invoking firebase config
-
 interface StudentModel{
   nim: string;
   nama: string;

@@ -1,14 +1,33 @@
 import { isPlatform } from '@ionic/core';
 import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { base64FromPath } from '@ionic/react-hooks/filesystem';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import { add, people } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import MemoryItem from '../components/MemoryItem';
-import { Memory } from '../data/memories-context';
 
 const GoodMemories: React.FC = () => {
-  const [good, setGood] = useState<Array<Memory>>([])
-  
+  const db = getFirestore()
+  const [good, setGood] = useState<Array<any>>([])
+
+  useEffect(() => {
+    async function getData() {
+      const querySnapshot = await getDocs(collection(db,"memories"))
+      console.log('querySnapshot: ',querySnapshot)
+
+      querySnapshot.forEach(doc => {
+        console.log(doc.data())
+        console.log('doc: ',doc)
+        // Check whether the type is good
+        if(doc.data().type==="good"){
+          setGood(before => {
+            return before.concat({...doc.data(),id: doc.id})
+          })
+        }
+      })
+    }
+    getData()
+  },[])
+
   let layout
   if(good.length === 0){
     layout = (
