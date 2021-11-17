@@ -19,8 +19,11 @@ const NewMemories: React.FC = () => {
 
   const [choosenMemoryType, setChoosenMemoryType] = useState<'good'|'bad'>('good')
   const titleRef = useRef<HTMLIonInputElement>(null)
-  const [selectedFile, setSelectedFile] = useState<File>()
-  const [fileName, setFileName] = useState('')
+  const [takenPhoto, setTakenPhoto] = useState<{
+    path: string | undefined;
+    preview: string;
+  }>();
+  const history = useHistory()
 
   // Add to Firestore
   const [presentToast, dismissToast] = useIonToast();
@@ -31,49 +34,104 @@ const NewMemories: React.FC = () => {
     const selectMemoryType = event.detail.value
     setChoosenMemoryType(selectMemoryType)
   }
-  
-  const fileChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedFile(event.target!.files![0]);
-    setFileName(event.target!.files![0].name)
-  }
+
+  const takePhotoHandler = async () => {
+    const photo = await Camera.getPhoto({
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
+        quality: 80,
+        width: 500
+    });
+
+    console.log(photo);
+
+    if (!photo || /* !photo.path || */ !photo.webPath) {
+        return;
+    }
+
+    setTakenPhoto({
+        path: photo.path,
+        preview: photo.webPath
+    });
+  };
 
   const addMemoryHandler = async () => {
-    const enteredTitle = titleRef.current?.value
-    if(!enteredTitle || 
-      enteredTitle.toString().trim().length === 0 || 
-      !choosenMemoryType || 
-      fileName == ""){
-      console.info(`enteredTitle: ${enteredTitle}`)
-      console.info(`choosenMemoryType: ${choosenMemoryType}`)
-      console.info(`filename: ${fileName}`)
-      console.log("ada yg tidak benar")
-      return
-    }
+    presentToast({
+      message: 'Adding your memory...',
+    });
+
+    const fileName = new Date().getTime() + '.jpeg';
+    const base64 = await base64FromPath(takenPhoto!.preview);
+
+    fetch(base64, {
+        headers: {
+            "Content-Type": "application/octet-stream",
+        },
+        credentials: 'include'
+    }).then(res => res.blob()).then(blob => {
+        uploadBytes(ref(storage, fileName), blob).then((snapshot) => { 
+            getDownloadURL(ref(storage, fileName)).then((url) => {
+              submitTextData(url, fileName);
+            }).then(() => {
+              history.replace('/' + choosenMemoryType)
+              dismissToast();
+            }).catch(_ => {
+              dismissToast();
+              presentToast({
+                message: 'Failed to add memories...',
+                color: 'danger',
+                duration: 500,
+              });
+            });
+        }).catch(_ => {
+          dismissToast();
+          presentToast({
+            message: 'Failed to add image...',
+            color: 'danger',
+            duration: 500,
+          });
+        });
+    }).catch(_ => {
+      dismissToast();
+      presentToast({
+        message: 'Something error with image...',
+        color: 'danger',
+        duration: 500,
+      });
+    });
     
-    const storageRef = ref(storage,fileName)
-    uploadBytes(storageRef,selectedFile as Blob).then((res) =>{
-      console.log("Upload success: ",res)
-      getDownloadURL(storageRef).then(url => {
-        submitTextData(url)
-      }).catch(err => {
-        console.log("Failed get downnload url: ",err)
-      })
-    }).catch(err => {
-      console.log("Upload error: ",err)
-    })
+    // const storageRef = ref(storage,fileName)
+    // uploadBytes(storageRef,selectedFile as Blob).then((res) =>{
+    //   console.log("Upload success: ",res)
+    //   getDownloadURL(storageRef).then(url => {
+    //     submitTextData(url)
+    //   }).catch(err => {
+    //     console.log("Failed get downnload url: ",err)
+    //   })
+    // }).catch(err => {
+    //   console.log("Upload error: ",err)
+    // })
   }
 
-  const submitTextData = async (url:string) => {
+  const submitTextData = async (url:string, fileName: string) => {
     const enteredTitle = titleRef.current?.value
-
+    if (!enteredTitle || 
+      enteredTitle.toString().trim().length === 0 || 
+      !takenPhoto || 
+      !choosenMemoryType) {
+      return;
+    }
     // Add to database
     try {    
       const docRef = await addDoc(collection(db,'memories'),{
         title: enteredTitle?.toString(),
+        id: Math.random().toString(),
+        foto: fileName,
+        fotoUrl: url,
         type: choosenMemoryType,
-        photo: url,
-        longitude: lng,
-        latitude: lat,
+        photo: takenPhoto!.preview,
+        longitude: lng.toString(),
+        latitude: lat.toString(),
       })
       dismissToast()
       presentToast({
@@ -129,11 +187,14 @@ const NewMemories: React.FC = () => {
         </IonItem>
         <IonRow className="ion-text-center ion-padding">
           <IonCol>
-            {/* <IonButton fill="clear" onClick={takePhotoHandler}>
+            <div className="image-preview">
+              {!takenPhoto && <h3>No Photo Chosen.</h3>}
+              {takenPhoto && <img src={takenPhoto.preview} alt="Preview" />}
+            </div>
+            <IonButton fill="clear" onClick={takePhotoHandler}>
               <IonIcon slot="start"  icon={camera} />
               <IonLabel>Take Photo</IonLabel>
-            </IonButton> */}
-            <input type="file" onChange={fileChangeHandler} />
+            </IonButton>
           </IonCol>
         </IonRow>
         <IonRow>

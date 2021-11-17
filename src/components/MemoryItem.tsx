@@ -2,7 +2,7 @@ import { IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle } from "@ionic/rea
 import LocationItem from "./LocationItem";
 
 const MemoryItem: React.FC<{memory: any}> = props => {
-  const { id,title,type, photo, latitude, longitude } = props.memory
+  const { id,title,type, fotoUrl, latitude, longitude } = props.memory
 
   const containerStyle = {
     width: '100%',
@@ -18,10 +18,10 @@ const MemoryItem: React.FC<{memory: any}> = props => {
     <IonRow key={id}>
       <IonCol>
         <IonCard>
-          <img src={photo}/>
+          <img src={fotoUrl} alt={title}/>
           <LocationItem lat={latitude} lng={longitude} selectPos={selectPos} containerStyle={containerStyle}/>
-          <IonCardHeader>
-            <IonCardTitle>{title}</IonCardTitle>
+          <IonCardHeader color={type === 'bad' ? 'danger' : 'success'}>
+            <IonCardTitle className="ion-text-center">{title}</IonCardTitle>
           </IonCardHeader>
         </IonCard>
       </IonCol>
