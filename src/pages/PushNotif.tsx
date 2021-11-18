@@ -89,13 +89,6 @@ const PushNotif: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Push Notifications</IonTitle>
-          <IonButtons slot="end">
-            <IonRouterLink routerLink="/add-student">
-              <IonButton>
-                <IonIcon slot="icon-only"  icon={add} />
-              </IonButton>
-            </IonRouterLink>
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -114,6 +107,7 @@ const PushNotif: React.FC = () => {
           {notifications.map(notif => {
             return <IonItem key={notif.id}>
               <IonLabel>
+                <p>notif: {notif}</p>
                 <h3>{notif.title}</h3>
                 <p>{notif.body}</p>
                 {notif.type === "foreground" && <p>This data was received in foreground</p>}
