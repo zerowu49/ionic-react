@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "3.2.5",
+    "@capacitor/android": "3.3.2",
     "@capacitor/app": "1.0.5",
     "@capacitor/camera": "^1.1.2",
-    "@capacitor/core": "3.2.5",
+    "@capacitor/core": "^3.3.2",
     "@capacitor/filesystem": "^1.0.5",
     "@capacitor/geolocation": "^1.1.2",
     "@capacitor/haptics": "1.1.2",
@@ -76,7 +76,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.2.5"
+    "@capacitor/cli": "^3.3.2"
   },
   "description": "An Ionic project"
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "81672417569",
+    "firebase_url": "https://ionic2021-74a96-default-rtdb.firebaseio.com",
+    "project_id": "ionic2021-74a96",
+    "storage_bucket": "ionic2021-74a96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81672417569:android:f1f7c62f25ee81870b0e60",
+        "android_client_info": {
+          "package_name": "com.ionic.memories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81672417569-j9rh7sf473205gqet6eb5aetq2cap873.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBopRT8-eNyVoHZMD9fmPOJIM6JUyokVTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81672417569-j9rh7sf473205gqet6eb5aetq2cap873.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

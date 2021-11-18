@@ -111,15 +111,13 @@ const PushNotif: React.FC = () => {
         </IonCard>
         <br/>
         <IonList>
-          {notifications.map(student => {
-            return <IonItem key={student.id}>
-              <IonAvatar slot='start'>
-                <img src={student.fotoUrl}/>
-              </IonAvatar>
+          {notifications.map(notif => {
+            return <IonItem key={notif.id}>
               <IonLabel>
-                {student.nim}<br/>
-                {student.nama}<br/>
-                {student.prodi}
+                <h3>{notif.title}</h3>
+                <p>{notif.body}</p>
+                {notif.type === "foreground" && <p>This data was received in foreground</p>}
+                {notif.type === "action" && <p>This data was received on tap</p>}
               </IonLabel>
             </IonItem>
           })}
@@ -128,7 +126,7 @@ const PushNotif: React.FC = () => {
       <IonFooter>
         <IonToolbar>
           <IonButton color="success" expand="full" onClick={registerPush}>Register for Push</IonButton>
-          <IonButton color="success" expand="full" routerLink={'/login'}>Go to Login</IonButton>
+          {/* <IonButton color="success" expand="full" routerLink={'/login'}>Go to Login</IonButton> */}
         </IonToolbar>
       </IonFooter>
     </IonPage>
