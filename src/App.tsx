@@ -26,7 +26,7 @@ import BadMemories from './pages/BadMemories';
 import NewMemories from './pages/NewMemories';
 import { useContext, useEffect } from 'react';
 import MemoriesContext from './data/memories-context';
-import Student from './pages/Student';
+import PushNotif from './pages/PushNotif';
 import AddStudent from './pages/AddStudent';
 
  // Invoking firebase config
@@ -47,8 +47,8 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Redirect to="/good" />
           </Route>
-          <Route exact path="/student">
-            <Student />
+          <Route exact path="/push-notif">
+            <PushNotif />
           </Route>
           <Route exact path="/add-student">
             <AddStudent />

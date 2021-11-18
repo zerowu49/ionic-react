@@ -1,7 +1,7 @@
 import { isPlatform } from '@ionic/core';
 import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { add, people } from 'ionicons/icons';
+import { add, notifications } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import MemoryItem from '../components/MemoryItem';
 
@@ -49,9 +49,9 @@ const GoodMemories: React.FC = () => {
         <IonToolbar>
           <IonTitle>Good Memories</IonTitle>
           <IonButtons slot="end">
-            <IonRouterLink routerLink="/student">
+            <IonRouterLink routerLink="/push-notif">
               <IonButton>
-                <IonIcon slot="icon-only"  icon={people} />
+                <IonIcon slot="icon-only"  icon={notifications} />
               </IonButton>
             </IonRouterLink>
             {isPlatform("ios") && 
